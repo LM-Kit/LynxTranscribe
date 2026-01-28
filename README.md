@@ -112,7 +112,7 @@ LynxTranscribe is a cross-platform desktop application for transcribing audio fi
 
 - **Windows**: Visual Studio 2022 (17.8+) with .NET MAUI workload
 - **macOS**: Visual Studio for Mac or JetBrains Rider
-- .NET 8.0 SDK
+- .NET 10.0 SDK
 
 ### Clone & Build
 
@@ -132,13 +132,13 @@ dotnet run --project LynxTranscribe.csproj
 ### Publish (Windows)
 
 ```bash
-dotnet publish -c Release -f net8.0-windows10.0.19041.0 -r win-x64
+dotnet publish -c Release -f net10.0-windows10.0.19041.0 -r win-x64
 ```
 
 ### Publish (macOS)
 
 ```bash
-dotnet publish -c Release -f net8.0-maccatalyst -r maccatalyst-x64
+dotnet publish -c Release -f net10.0-maccatalyst -r maccatalyst-x64
 ```
 
 ## Architecture
