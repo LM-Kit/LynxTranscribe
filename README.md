@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#features">Features</a> •
+  <a href="#screenshots">Screenshots</a> •
   <a href="#usage">Usage</a> •
   <a href="#building">Building</a> •
   <a href="#architecture">Architecture</a> •
@@ -28,6 +29,26 @@ LynxTranscribe is a cross-platform desktop application for transcribing audio fi
 - **Fast** - Optimized for speed with turbo and accurate modes
 - **Private** - No data collection, no cloud processing
 - **Cross-platform** - Runs on Windows and macOS
+
+## Screenshots
+
+<p align="center">
+  <img src="Resources/Images/Screenshots/screen0.jpg" alt="LynxTranscribe - Ready to transcribe" width="800">
+  <br>
+  <em>Clean interface ready to receive audio files via drag & drop</em>
+</p>
+
+<p align="center">
+  <img src="Resources/Images/Screenshots/screen1.jpg" alt="LynxTranscribe - Audio loaded" width="800">
+  <br>
+  <em>Audio file loaded with transcription options: language selection, VAD, and quality modes</em>
+</p>
+
+<p align="center">
+  <img src="Resources/Images/Screenshots/screen2.jpg" alt="LynxTranscribe - Transcription results" width="800">
+  <br>
+  <em>Transcription results displayed in segment view with timestamps and audio playback</em>
+</p>
 
 ## Features
 
