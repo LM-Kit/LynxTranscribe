@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!-- Microphone body (left side) - centered in canvas -->
+  <rect x="128" y="138" width="88" height="126" rx="44" fill="#F59E0B"/>
+  
+  <!-- Microphone stand arc -->
+  <path d="M115 198 Q115 274 172 274 Q228 274 228 198" fill="none" stroke="#F59E0B" stroke-width="19" stroke-linecap="round"/>
+  
+  <!-- Stand line -->
+  <line x1="172" y1="274" x2="172" y2="312" stroke="#F59E0B" stroke-width="19" stroke-linecap="round"/>
+  
+  <!-- Base -->
+  <line x1="128" y1="312" x2="218" y2="312" stroke="#F59E0B" stroke-width="19" stroke-linecap="round"/>
+  
+  <!-- Text lines (representing transcript) -->
+  <line x1="258" y1="158" x2="358" y2="158" stroke="#F59E0B" stroke-width="22" stroke-linecap="round"/>
+  <line x1="258" y1="198" x2="338" y2="198" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" opacity="0.7"/>
+  <line x1="258" y1="238" x2="358" y2="238" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" opacity="0.5"/>
+  <line x1="258" y1="278" x2="318" y2="278" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" opacity="0.3"/>
+</svg>

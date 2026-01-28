@@ -1,0 +1,676 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter</value>
+  </resheader>
+
+  <!-- App name and branding -->
+  <data name="AppName" xml:space="preserve">
+    <value>LynxTranscribe</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>v1.0</value>
+  </data>
+  <data name="PoweredBy" xml:space="preserve">
+    <value>Powered by</value>
+  </data>
+
+  <!-- Main navigation -->
+  <data name="Audio" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+
+  <!-- Transcription modes -->
+  <data name="Turbo" xml:space="preserve">
+    <value>Turbo</value>
+  </data>
+  <data name="Accurate" xml:space="preserve">
+    <value>Accurate</value>
+  </data>
+
+  <!-- Main actions -->
+  <data name="Transcribe" xml:space="preserve">
+    <value>Transcribe</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Cancelling" xml:space="preserve">
+    <value>Cancelling...</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="Record" xml:space="preserve">
+    <value>Record</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Editing" xml:space="preserve">
+    <value>Editing</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+
+  <!-- Dialogs -->
+  <data name="DeleteConfirmTitle" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteConfirmMessage" xml:space="preserve">
+    <value>Delete this transcription from history?</value>
+  </data>
+  <data name="ClearHistoryTitle" xml:space="preserve">
+    <value>Clear History</value>
+  </data>
+  <data name="ClearHistoryMessage" xml:space="preserve">
+    <value>Delete all transcription history? This cannot be undone.</value>
+  </data>
+  <data name="RenameTitle" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="RenameMessage" xml:space="preserve">
+    <value>Enter a new name for this transcription:</value>
+  </data>
+
+  <!-- History tooltips -->
+  <data name="DoubleClickToPlay" xml:space="preserve">
+    <value>Double-click to play</value>
+  </data>
+
+  <!-- File drop zone -->
+  <data name="DropAudioFileHere" xml:space="preserve">
+    <value>Drop audio file here</value>
+  </data>
+  <data name="OrBrowseFilesRecordAudio" xml:space="preserve">
+    <value>or browse files / record audio</value>
+  </data>
+  <data name="SupportedFormats" xml:space="preserve">
+    <value>Supports WAV, MP3, FLAC, OGG, M4A</value>
+  </data>
+
+  <!-- Recording -->
+  <data name="GetReady" xml:space="preserve">
+    <value>Get ready...</value>
+  </data>
+  <data name="ClickToSkip" xml:space="preserve">
+    <value>Click to skip</value>
+  </data>
+  <data name="ClickToSkipCountdown" xml:space="preserve">
+    <value>Click to skip countdown</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Recording...</value>
+  </data>
+  <data name="StopRecording" xml:space="preserve">
+    <value>Stop Recording</value>
+  </data>
+  <data name="UsingMicrophone" xml:space="preserve">
+    <value>Using: {0}</value>
+  </data>
+  <data name="NoMic" xml:space="preserve">
+    <value>No Mic</value>
+  </data>
+  <data name="NoDevice" xml:space="preserve">
+    <value>No device</value>
+  </data>
+  <data name="RecordingStarted" xml:space="preserve">
+    <value>Recording started</value>
+  </data>
+  <data name="RecordingCancelled" xml:space="preserve">
+    <value>Recording cancelled</value>
+  </data>
+
+  <!-- History panel -->
+  <data name="NoHistoryYet" xml:space="preserve">
+    <value>No history yet</value>
+  </data>
+  <data name="TranscriptionsWillAppearHere" xml:space="preserve">
+    <value>Transcriptions will appear here</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>Open file location</value>
+  </data>
+
+  <!-- Transcript panel -->
+  <data name="Transcript" xml:space="preserve">
+    <value>Transcript</value>
+  </data>
+  <data name="SearchInTranscript" xml:space="preserve">
+    <value>Search in transcript (Ctrl+F)</value>
+  </data>
+  <data name="FindInTranscript" xml:space="preserve">
+    <value>Find in transcript...</value>
+  </data>
+  <data name="SearchHistory" xml:space="preserve">
+    <value>Search history...</value>
+  </data>
+  <data name="ReadyToTranscribe" xml:space="preserve">
+    <value>Ready to transcribe</value>
+  </data>
+  <data name="ConvertSpeechToText" xml:space="preserve">
+    <value>Convert speech to text in seconds</value>
+  </data>
+  <data name="SelectOrDropAudioFile" xml:space="preserve">
+    <value>Select or drop an audio file</value>
+  </data>
+  <data name="ClickTranscribeToStart" xml:space="preserve">
+    <value>Click Transcribe to start</value>
+  </data>
+  <data name="Words" xml:space="preserve">
+    <value>{0:N0} words</value>
+  </data>
+  <data name="WordsPartial" xml:space="preserve">
+    <value>{0:N0} words (partial)</value>
+  </data>
+  <data name="Segments" xml:space="preserve">
+    <value>{0:N0} segments</value>
+  </data>
+  <data name="ProcessedIn" xml:space="preserve">
+    <value>processed in {0:F1}s</value>
+  </data>
+  <data name="ProcessedInMinutes" xml:space="preserve">
+    <value>processed in {0}m {1:F0}s</value>
+  </data>
+  <data name="Elapsed" xml:space="preserve">
+    <value>{0:F0}s elapsed</value>
+  </data>
+  <data name="ElapsedMinutes" xml:space="preserve">
+    <value>{0}m {1}s elapsed</value>
+  </data>
+  <data name="Remaining" xml:space="preserve">
+    <value>~{0}s remaining</value>
+  </data>
+  <data name="RemainingMinutes" xml:space="preserve">
+    <value>~{0}m {1}s remaining</value>
+  </data>
+
+  <!-- Playback -->
+  <data name="PlaybackSpeed" xml:space="preserve">
+    <value>Playback speed: {0}x</value>
+  </data>
+  <data name="SpeedSlower" xml:space="preserve">
+    <value>Slower</value>
+  </data>
+  <data name="SpeedFaster" xml:space="preserve">
+    <value>Faster</value>
+  </data>
+  <data name="SpeedReset" xml:space="preserve">
+    <value>Reset to 1×</value>
+  </data>
+
+  <!-- Transcription status -->
+  <data name="Transcribing" xml:space="preserve">
+    <value>Transcribing...</value>
+  </data>
+  <data name="DownloadingModel" xml:space="preserve">
+    <value>Downloading {0}...</value>
+  </data>
+  <data name="DownloadingModelProgress" xml:space="preserve">
+    <value>Downloading model...</value>
+  </data>
+  <data name="LoadingModel" xml:space="preserve">
+    <value>Loading {0}...</value>
+  </data>
+  <data name="Calculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
+  <data name="MBRequired" xml:space="preserve">
+    <value>{0:F0} MB required</value>
+  </data>
+
+  <!-- Settings panel -->
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
+  <data name="DarkModeDescription" xml:space="preserve">
+    <value>Switch between light and dark theme</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageDescription" xml:space="preserve">
+    <value>Choose your preferred language</value>
+  </data>
+  <data name="VoiceActivityDetection" xml:space="preserve">
+    <value>Voice Activity Detection</value>
+  </data>
+  <data name="VadDescription" xml:space="preserve">
+    <value>Filter out silence and non-speech audio</value>
+  </data>
+  <data name="VadTooltip" xml:space="preserve">
+    <value>Voice Activity Detection - Filters out silence and non-speech audio</value>
+  </data>
+  <data name="AutoTranscribeOnImport" xml:space="preserve">
+    <value>Auto-transcribe on import</value>
+  </data>
+  <data name="AutoTranscribeOnImportDescription" xml:space="preserve">
+    <value>Automatically begin transcription when audio is loaded</value>
+  </data>
+  <data name="TranscriptionLanguageSetting" xml:space="preserve">
+    <value>Transcription Language</value>
+  </data>
+  <data name="TranscriptionLanguageSettingDescription" xml:space="preserve">
+    <value>Language for speech recognition</value>
+  </data>
+  <data name="TranscriptionModeSetting" xml:space="preserve">
+    <value>Transcription Mode</value>
+  </data>
+  <data name="TranscriptionModeSettingDescription" xml:space="preserve">
+    <value>Balance between speed and accuracy</value>
+  </data>
+  <data name="OpenFilesAfterExport" xml:space="preserve">
+    <value>Open files after export</value>
+  </data>
+  <data name="OpenFilesAfterExportDescription" xml:space="preserve">
+    <value>Automatically open exported files in default app</value>
+  </data>
+  <data name="AudioInput" xml:space="preserve">
+    <value>Audio Input</value>
+  </data>
+  <data name="AudioInputDescription" xml:space="preserve">
+    <value>Microphone for recording</value>
+  </data>
+  <data name="StorageLocations" xml:space="preserve">
+    <value>Storage Locations</value>
+  </data>
+  <data name="ModelDirectory" xml:space="preserve">
+    <value>Model Directory</value>
+  </data>
+  <data name="ModelDirectoryDescription" xml:space="preserve">
+    <value>Where AI models are stored</value>
+  </data>
+  <data name="RecordingsDirectory" xml:space="preserve">
+    <value>Recordings Directory</value>
+  </data>
+  <data name="RecordingsDirectoryDescription" xml:space="preserve">
+    <value>Where audio recordings are saved</value>
+  </data>
+  <data name="HistoryDirectory" xml:space="preserve">
+    <value>History Directory</value>
+  </data>
+  <data name="HistoryDirectoryDescription" xml:space="preserve">
+    <value>Where transcription history is stored</value>
+  </data>
+  <data name="ResetToDefaults" xml:space="preserve">
+    <value>Reset to Defaults</value>
+  </data>
+  <data name="ResetConfirmMessage" xml:space="preserve">
+    <value>This will reset all settings to their default values. Are you sure?</value>
+  </data>
+  <data name="SettingsResetToDefaults" xml:space="preserve">
+    <value>Settings reset to defaults</value>
+  </data>
+  <data name="ModelDirectoryUpdated" xml:space="preserve">
+    <value>Model directory updated</value>
+  </data>
+  <data name="RecordingsDirectoryUpdated" xml:space="preserve">
+    <value>Recordings directory updated</value>
+  </data>
+  <data name="HistoryDirectoryUpdated" xml:space="preserve">
+    <value>History directory updated</value>
+  </data>
+  <data name="CouldNotOpenFolder" xml:space="preserve">
+    <value>Could not open folder: {0}</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+
+  <!-- Export panel -->
+  <data name="ExportTranscript" xml:space="preserve">
+    <value>Export Transcript</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Plain Text</value>
+  </data>
+  <data name="PlainTextDescription" xml:space="preserve">
+    <value>.txt - Simple text format</value>
+  </data>
+  <data name="WordDocument" xml:space="preserve">
+    <value>Word Document</value>
+  </data>
+  <data name="WordDocumentDescription" xml:space="preserve">
+    <value>.docx - Microsoft Word format</value>
+  </data>
+  <data name="RichText" xml:space="preserve">
+    <value>Rich Text</value>
+  </data>
+  <data name="RichTextDescription" xml:space="preserve">
+    <value>.rtf - Formatted text with styling</value>
+  </data>
+  <data name="SrtSubtitles" xml:space="preserve">
+    <value>SRT Subtitles</value>
+  </data>
+  <data name="SrtSubtitlesDescription" xml:space="preserve">
+    <value>.srt - Timed subtitles for video</value>
+  </data>
+  <data name="WebVttSubtitles" xml:space="preserve">
+    <value>WebVTT Subtitles</value>
+  </data>
+  <data name="WebVttSubtitlesDescription" xml:space="preserve">
+    <value>.vtt - Web video text tracks</value>
+  </data>
+  <data name="OpenFileAfterExport" xml:space="preserve">
+    <value>Open file after export</value>
+  </data>
+
+  <!-- Segment details -->
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Confidence" xml:space="preserve">
+    <value>Confidence</value>
+  </data>
+  <data name="SegmentLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="TimestampsCount" xml:space="preserve">
+    <value>{0} timestamps</value>
+  </data>
+
+  <!-- Status bar -->
+  <data name="VAD" xml:space="preserve">
+    <value>VAD</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>ON</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>OFF</value>
+  </data>
+  <data name="Backend" xml:space="preserve">
+    <value>Backend</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="VadEnabled" xml:space="preserve">
+    <value>Voice Activity Detection is enabled - silence and non-speech audio will be filtered out</value>
+  </data>
+  <data name="VadDisabled" xml:space="preserve">
+    <value>Voice Activity Detection is disabled - all audio will be transcribed</value>
+  </data>
+  <data name="NoAudioDevice" xml:space="preserve">
+    <value>No device</value>
+  </data>
+  <data name="NoAudioDeviceAvailable" xml:space="preserve">
+    <value>No audio input device available</value>
+  </data>
+  <data name="CouldNotDetectAudioDevice" xml:space="preserve">
+    <value>Could not detect audio input device</value>
+  </data>
+  <data name="LMKitBackend" xml:space="preserve">
+    <value>LM-Kit Runtime Backend: {0}</value>
+  </data>
+  <data name="CouldNotDetectBackend" xml:space="preserve">
+    <value>Could not detect LM-Kit backend</value>
+  </data>
+
+  <!-- Language selection -->
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select Language</value>
+  </data>
+
+  <!-- Theme toggle tooltips -->
+  <data name="SwitchToLightMode" xml:space="preserve">
+    <value>Switch to light mode</value>
+  </data>
+  <data name="SwitchToDarkMode" xml:space="preserve">
+    <value>Switch to dark mode</value>
+  </data>
+
+  <!-- Toast messages -->
+  <data name="Copied" xml:space="preserve">
+    <value>Copied!</value>
+  </data>
+  <data name="RecordingSaved" xml:space="preserve">
+    <value>Recording saved</value>
+  </data>
+  <data name="TranscriptionComplete" xml:space="preserve">
+    <value>Transcription complete</value>
+  </data>
+  <data name="TranscriptionCancelled" xml:space="preserve">
+    <value>Transcription cancelled</value>
+  </data>
+  <data name="TranscriptionFailed" xml:space="preserve">
+    <value>Transcription Failed</value>
+  </data>
+  <data name="SavedTo" xml:space="preserve">
+    <value>Saved to {0}</value>
+  </data>
+  <data name="RecordingError" xml:space="preserve">
+    <value>Recording error: {0}</value>
+  </data>
+  <data name="FailedToStartRecording" xml:space="preserve">
+    <value>Failed to start recording: {0}</value>
+  </data>
+  <data name="CouldNotOpenFileLocation" xml:space="preserve">
+    <value>Could not open file location: {0}</value>
+  </data>
+  <data name="VadEnabledNotice" xml:space="preserve">
+    <value>Voice Activity Detection was enabled - silence and non-speech audio were filtered out</value>
+  </data>
+  <data name="NoTranscriptToSearch" xml:space="preserve">
+    <value>No transcript to search</value>
+  </data>
+  <data name="OpenFileLocationWindowsOnly" xml:space="preserve">
+    <value>Open file location is only available on Windows</value>
+  </data>
+  <data name="AudioFileNotFound" xml:space="preserve">
+    <value>Audio file not found</value>
+  </data>
+  <data name="PlaybackSpeedFormat" xml:space="preserve">
+    <value>Playback speed: {0}x</value>
+  </data>
+
+  <!-- Tooltips -->
+  <data name="PreviousMatch" xml:space="preserve">
+    <value>Previous match (Shift+Enter)</value>
+  </data>
+  <data name="NextMatch" xml:space="preserve">
+    <value>Next match (Enter)</value>
+  </data>
+  <data name="CloseEscape" xml:space="preserve">
+    <value>Close (Escape)</value>
+  </data>
+  <data name="DecreaseFontSize" xml:space="preserve">
+    <value>Decrease font size</value>
+  </data>
+  <data name="IncreaseFontSize" xml:space="preserve">
+    <value>Increase font size</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy transcript to clipboard</value>
+  </data>
+  <data name="ExportTooltip" xml:space="preserve">
+    <value>Export to TXT, DOCX, RTF, SRT or VTT</value>
+  </data>
+  <data name="RestartPlayback" xml:space="preserve">
+    <value>Restart from beginning</value>
+  </data>
+  <data name="AccurateModeTooltip" xml:space="preserve">
+    <value>Transcribed using Accurate mode for higher quality results</value>
+  </data>
+  <data name="TurboModeTooltip" xml:space="preserve">
+    <value>Transcribed using Turbo mode for faster processing</value>
+  </data>
+  <data name="VadBadgeTooltip" xml:space="preserve">
+    <value>Voice Activity Detection was enabled - silence and non-speech audio were filtered out</value>
+  </data>
+
+  <!-- Misc -->
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Searching</value>
+  </data>
+  <data name="LMKit" xml:space="preserve">
+    <value>LM-Kit</value>
+  </data>
+  <data name="StatusBarInfo" xml:space="preserve">
+    <value>LynxTranscribe v1.0 - Powered by LM-Kit</value>
+  </data>
+
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="TranscriptionSettings" xml:space="preserve">
+    <value>Transcription</value>
+  </data>
+  <data name="PressEscToClose" xml:space="preserve">
+    <value>Press Esc to close</value>
+  </data>
+
+  <!-- Dictation formatting -->
+  <data name="DictationFormatting" xml:space="preserve">
+    <value>Dictation formatting</value>
+  </data>
+  <data name="DictationFormattingDescription" xml:space="preserve">
+    <value>Convert spoken commands (period, comma, new line)</value>
+  </data>
+  <data name="DictationCommands" xml:space="preserve">
+    <value>Dictation Commands</value>
+  </data>
+  <data name="DictationCommandsSubtitle" xml:space="preserve">
+    <value>Say these words to insert formatting</value>
+  </data>
+  <data name="DictationCategoryLineBreaks" xml:space="preserve">
+    <value>Line Breaks</value>
+  </data>
+  <data name="DictationCategoryPunctuationLineBreak" xml:space="preserve">
+    <value>Punctuation + Line Break</value>
+  </data>
+  <data name="DictationCategoryPunctuation" xml:space="preserve">
+    <value>Punctuation</value>
+  </data>
+  <data name="DictationCategoryBrackets" xml:space="preserve">
+    <value>Brackets &amp; Parentheses</value>
+  </data>
+  <data name="DictationCategoryQuotes" xml:space="preserve">
+    <value>Quotation Marks</value>
+  </data>
+  <data name="DictationCategorySymbols" xml:space="preserve">
+    <value>Symbols</value>
+  </data>
+  <data name="DictationCategoryTextFormatting" xml:space="preserve">
+    <value>Text Formatting</value>
+  </data>
+  <data name="ApplyDictationFormatting" xml:space="preserve">
+    <value>Apply dictation formatting</value>
+  </data>
+  <data name="Dictation" xml:space="preserve">
+    <value>Dictation</value>
+  </data>
+  <data name="DictationTooltip" xml:space="preserve">
+    <value>Convert spoken commands to punctuation (period, comma, new line)</value>
+  </data>
+  <data name="ViewModeSegments" xml:space="preserve">
+    <value>Segments</value>
+  </data>
+  <data name="ViewModeDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="ShowDictationCommands" xml:space="preserve">
+    <value>Show dictation commands</value>
+  </data>
+  
+  <!-- Performance settings -->
+  <data name="PerformanceSettings" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="ResourceUsage" xml:space="preserve">
+    <value>System Resource Usage</value>
+  </data>
+  <data name="ResourceUsageDescription" xml:space="preserve">
+    <value>CPU threads allocated for transcription</value>
+  </data>
+  <data name="ResourceLevelLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ResourceLevelBalanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="ResourceLevelPerformance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="ResourceLevelMaximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="UsingThreads" xml:space="preserve">
+    <value>Using {0} of {1} threads</value>
+  </data>
+</root>
