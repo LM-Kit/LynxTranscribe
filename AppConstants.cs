@@ -52,14 +52,24 @@ public static class AppConstants
     }
 
     /// <summary>
-    /// Supported audio file extensions
+    /// Supported media file extensions (audio and video containers)
+    /// Video formats use Windows Media Foundation for audio extraction.
     /// </summary>
-    public static readonly string[] SupportedAudioExtensions =
-        { ".wav", ".mp3", ".flac", ".ogg", ".m4a", ".wma" };
-
-    public static bool IsSupportedAudioFile(string filePath)
+    public static readonly string[] SupportedMediaExtensions =
     {
-        var ext = System.IO.Path.GetExtension(filePath)?.ToLowerInvariant();
-        return ext != null && Array.Exists(SupportedAudioExtensions, e => e == ext);
+        ".wav", ".mp3", ".flac", ".ogg", ".m4a", ".wma",
+        ".mp4", ".aac", ".avi", ".mov"
+    };
+
+    /// <summary>
+    /// Gets a formatted string of supported formats for display
+    /// </summary>
+    public static string SupportedFormatsDisplay =>
+        string.Join(", ", SupportedMediaExtensions.Select(e => e.TrimStart('.').ToUpperInvariant()));
+
+    public static bool IsSupportedMediaFile(string filePath)
+    {
+        var ext = Path.GetExtension(filePath)?.ToLowerInvariant();
+        return ext != null && Array.Exists(SupportedMediaExtensions, e => e == ext);
     }
 }

@@ -3,6 +3,10 @@ using LynxTranscribe.Helpers;
 using LynxTranscribe.Localization;
 using LynxTranscribe.Services;
 using L = LynxTranscribe.Localization.LocalizationService;
+#if WINDOWS
+using Windows.Storage.Pickers;
+using WinRT.Interop;
+#endif
 
 namespace LynxTranscribe;
 
@@ -26,28 +30,51 @@ public partial class MainPage
     {
         try
         {
-            var fileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-            {
-                { DevicePlatform.WinUI, new[] { ".wav", ".mp3", ".flac", ".ogg", ".m4a", ".wma" } },
-                { DevicePlatform.macOS, new[] { "wav", "mp3", "flac", "ogg", "m4a" } },
-                { DevicePlatform.MacCatalyst, new[] { "wav", "mp3", "flac", "ogg", "m4a" } }
-            });
+            string? filePath = await PickMediaFileAsync();
 
-            var result = await FilePicker.Default.PickAsync(new PickOptions
+            if (filePath != null)
             {
-                PickerTitle = "Select an audio file",
-                FileTypes = fileTypes
-            });
-
-            if (result != null)
-            {
-                await LoadDroppedFile(result.FullPath);
+                await LoadDroppedFile(filePath);
             }
         }
         catch (Exception ex)
         {
             ShowError("File Selection Error", ex.Message);
         }
+    }
+
+    private async Task<string?> PickMediaFileAsync()
+    {
+#if WINDOWS
+        var picker = new FileOpenPicker();
+        picker.ViewMode = PickerViewMode.List;
+        picker.SuggestedStartLocation = PickerLocationId.MusicLibrary;
+        
+        foreach (var ext in AppConstants.SupportedMediaExtensions)
+        {
+            picker.FileTypeFilter.Add(ext);
+        }
+
+        var hwnd = ((MauiWinUIWindow)Application.Current!.Windows[0].Handler.PlatformView!).WindowHandle;
+        InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSingleFileAsync();
+        return file?.Path;
+#else
+        var fileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+        {
+            { DevicePlatform.macOS, AppConstants.SupportedMediaExtensions.Select(e => e.TrimStart('.')) },
+            { DevicePlatform.MacCatalyst, AppConstants.SupportedMediaExtensions.Select(e => e.TrimStart('.')) }
+        });
+
+        var result = await FilePicker.Default.PickAsync(new PickOptions
+        {
+            PickerTitle = "Select an audio or video file",
+            FileTypes = fileTypes
+        });
+
+        return result?.FullPath;
+#endif
     }
 
     private async Task LoadAudioFile(string filePath)

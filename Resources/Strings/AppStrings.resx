@@ -673,4 +673,12 @@
   <data name="UsingThreads" xml:space="preserve">
     <value>Using {0} of {1} threads</value>
   </data>
+
+  <!-- File loading -->
+  <data name="LoadingFile" xml:space="preserve">
+    <value>Loading file...</value>
+  </data>
+  <data name="ExtractingAudio" xml:space="preserve">
+    <value>Extracting audio and generating waveform...</value>
+  </data>
 </root>

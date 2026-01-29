@@ -484,10 +484,10 @@ public partial class MainPage
 
     private async Task LoadDroppedFile(string filePath)
     {
-        if (!AppConstants.IsSupportedAudioFile(filePath))
+        if (!AppConstants.IsSupportedMediaFile(filePath))
         {
             var ext = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
-            ShowError("Unsupported Format", $"The file format '{ext}' is not supported.\n\nSupported formats: WAV, MP3, FLAC, OGG, M4A, WMA");
+            ShowError("Unsupported Format", $"The file format '{ext}' is not supported.\n\nSupported formats: {AppConstants.SupportedFormatsDisplay}");
             return;
         }
 
@@ -504,6 +504,13 @@ public partial class MainPage
         FileSelectedState.IsVisible = true;
         ClearButton.IsVisible = true;
 
+        // Show loading state on right panel (hide other states)
+        InitialStepsPanel.IsVisible = false;
+        TranscriptionControlsPanel.IsVisible = false;
+        FileLoadingPanel.IsVisible = true;
+        LoadingFileName.Text = fileName;
+        EmptyStateTitle.Text = L.Localize(StringKeys.LoadingFile);
+
         // DO NOT touch transcript UI - it's managed by tab switching
         // Close search if open
         if (SearchBar.IsVisible)
@@ -514,30 +521,39 @@ public partial class MainPage
         // Update file selection dependent UI (drop zone, step badges)
         UpdateFileSelectionUI();
 
-        // Run heavy operations in parallel on background threads
-        var loadAudioTask = LoadAudioFile(filePath);
-        var loadPlayerTask = _audioPlayer.LoadAsync(filePath);
-        var waveformTask = GenerateWaveformAsync(filePath);
-
-        // Wait for LMKit audio to load (for duration info)
-        await loadAudioTask;
-
-        // Update duration display
-        var durationText = _lmKitService.LoadedAudio != null ? $" · {_lmKitService.LoadedAudio.Duration:mm\\:ss}" : "";
-        SelectedFileInfo.Text = $"{FormatFileSize(fileInfo.Length)}{durationText}";
-
-        // Wait for player to be ready
-        if (await loadPlayerTask)
+        try
         {
-            PlayerPanel.IsVisible = true;
-            TotalTimeLabel.Text = TranscriptExporter.FormatDisplayTime(_audioPlayer.TotalDuration);
-            CurrentTimeLabel.Text = "0:00";
-            PlaybackSlider.Value = 0;
-            PlayPauseIcon.Text = "▶";
-        }
+            // Run heavy operations in parallel on background threads
+            var loadAudioTask = LoadAudioFile(filePath);
+            var loadPlayerTask = _audioPlayer.LoadAsync(filePath);
+            var waveformTask = GenerateWaveformAsync(filePath);
 
-        // Wait for waveform (may already be done)
-        await waveformTask;
+            // Wait for LMKit audio to load (for duration info)
+            await loadAudioTask;
+
+            // Update duration display
+            var durationText = _lmKitService.LoadedAudio != null ? $" · {_lmKitService.LoadedAudio.Duration:mm\\:ss}" : "";
+            SelectedFileInfo.Text = $"{FormatFileSize(fileInfo.Length)}{durationText}";
+
+            // Wait for player to be ready
+            if (await loadPlayerTask)
+            {
+                PlayerPanel.IsVisible = true;
+                TotalTimeLabel.Text = TranscriptExporter.FormatDisplayTime(_audioPlayer.TotalDuration);
+                CurrentTimeLabel.Text = "0:00";
+                PlaybackSlider.Value = 0;
+                PlayPauseIcon.Text = "▶";
+            }
+
+            // Wait for waveform (may already be done)
+            await waveformTask;
+        }
+        finally
+        {
+            // Always hide loading state and restore title
+            FileLoadingPanel.IsVisible = false;
+            EmptyStateTitle.Text = L.Localize(StringKeys.ReadyToTranscribe);
+        }
 
         UpdateTranscribeButtonState();
 

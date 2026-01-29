@@ -15,6 +15,12 @@ public class LMKitService : IDisposable
     public const string ModelIdAccurate = "whisper-large3";
     public const string ModelIdTurbo = "whisper-large-turbo3";
 
+    // Formats that require MediaFoundationReader (video containers and AAC-based formats)
+    private static readonly HashSet<string> MediaFoundationFormats = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".mp4", ".m4a", ".aac", ".avi", ".mov", ".wma"
+    };
+
     // Core LM-Kit objects
     private WaveFile? _loadedAudio;
     private SpeechToText? _speechToText;
@@ -66,6 +72,7 @@ public class LMKitService : IDisposable
     /// <summary>
     /// Loads an audio file for transcription.
     /// Automatically converts non-WAV files to WAV format.
+    /// Supports MP4, M4A, AAC, AVI, MOV via Windows Media Foundation.
     /// </summary>
     /// <param name="filePath">Path to the audio file</param>
     /// <returns>Task that completes when audio is loaded</returns>
@@ -75,28 +82,49 @@ public class LMKitService : IDisposable
 
         await Task.Run(() =>
         {
-            if (!WaveFile.IsValidWaveFile(filePath))
+            if (WaveFile.IsValidWaveFile(filePath))
             {
-                // Convert to WAV format
-                using var reader = new AudioFileReader(filePath);
-                string tempFileName = $"{Guid.NewGuid():N}.wav";
-                string tempFilePath = Path.Combine(Path.GetTempPath(), tempFileName);
+                _loadedAudio = new WaveFile(filePath);
+                return;
+            }
 
-                WaveFileWriter.CreateWaveFile16(tempFilePath, reader);
-                try
+            string tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.wav");
+
+            try
+            {
+                string extension = Path.GetExtension(filePath);
+
+                if (MediaFoundationFormats.Contains(extension))
                 {
-                    _loadedAudio = new WaveFile(File.ReadAllBytes(tempFilePath));
+                    ConvertWithMediaFoundation(filePath, tempFilePath);
                 }
-                finally
+                else
+                {
+                    ConvertWithNAudio(filePath, tempFilePath);
+                }
+
+                _loadedAudio = new WaveFile(File.ReadAllBytes(tempFilePath));
+            }
+            finally
+            {
+                if (File.Exists(tempFilePath))
                 {
                     File.Delete(tempFilePath);
                 }
             }
-            else
-            {
-                _loadedAudio = new WaveFile(filePath);
-            }
         });
+    }
+
+    private static void ConvertWithMediaFoundation(string inputPath, string outputPath)
+    {
+        using var reader = new MediaFoundationReader(inputPath);
+        WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
+    }
+
+    private static void ConvertWithNAudio(string inputPath, string outputPath)
+    {
+        using var reader = new AudioFileReader(inputPath);
+        WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
     }
 
     /// <summary>
@@ -123,13 +151,11 @@ public class LMKitService : IDisposable
     {
         var requestedModelId = useAccurateMode ? ModelIdAccurate : ModelIdTurbo;
 
-        // Check if requested model is already loaded
         if (_model != null && _lastLoadedModelId == requestedModelId)
         {
             return;
         }
 
-        // Dispose existing model
         DisposeModel();
 
         _isModelLoading = true;
@@ -137,7 +163,7 @@ public class LMKitService : IDisposable
 
         LM.DeviceConfiguration deviceConfiguration = new LM.DeviceConfiguration()
         {
-            GpuLayerCount = int.MaxValue  //add option to disable GPU.
+            GpuLayerCount = int.MaxValue
         };
 
         try
