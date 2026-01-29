@@ -1,0 +1,36 @@
+:: Performace:
+
+- Target domain specific use cases (lyrics extraction, medical transcription, meeting nodes...)
+	- Contextual prompting / vocabs. IE "Lyrics:"
+	- lora adapters hot-load
+
+:: UX:
+
+- option to reprocess sound with different parameters
+- reprocess specific segment
+- reprocess audio after specific segment
+- option to use whisper v2 models
+- option to drop header/footer in produced documents
+
+- Keyboard Shortcuts (must be documented)
+- VAD settings in config pannel
+- Settings pannel too tall now.
+
+:: High impact capabilities
+
+ - Batch processing
+	- folder watch + notifications
+ - Real-time transcription
+ - Voice isolation (demucs)
+
+ :: MISC
+
+ -   Format DSS
+
+:: GenAI - Post-processing:
+
+Summarize - Generate a summary
+Extract Action Items - Pull out tasks/to-dos
+Format as Meeting Notes - Structure with headers
+Correct Grammar - Fix transcription errors
+Translate - Convert to another language

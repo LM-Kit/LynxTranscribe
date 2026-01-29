@@ -397,6 +397,8 @@ public partial class MainPage
         TranscriptHeaderLabel.IsVisible = false;
         HistoryPlaybackPanel.IsVisible = false;
         ProgressPanel.IsVisible = false;
+        ElapsedTimeLabel.IsVisible = false;
+        TimeSeparatorLabel.IsVisible = false;
         EstimatedTimeLabel.IsVisible = false;
         StatsPanel.IsVisible = false;
         ResultActions.IsVisible = false;
@@ -421,6 +423,8 @@ public partial class MainPage
 
             // Hide progress/loading UI
             ProgressPanel.IsVisible = false;
+            ElapsedTimeLabel.IsVisible = false;
+            TimeSeparatorLabel.IsVisible = false;
             EstimatedTimeLabel.IsVisible = false;
             ModelLoadingState.IsVisible = false;
 
@@ -495,7 +499,6 @@ public partial class MainPage
     {
         _stopwatch.Restart();
         _transcriptionStartTime = DateTime.Now;
-        _lastProgressValue = 0;
         _cancellationTokenSource = new CancellationTokenSource();
         var segments = new List<AudioSegment>();
 
@@ -640,41 +643,62 @@ public partial class MainPage
 
     private void UpdateEstimatedTime(int progress)
     {
-        var elapsed = (DateTime.Now - _transcriptionStartTime).TotalSeconds;
+        // Calculate elapsed seconds since transcription started
+        double elapsedSeconds = (DateTime.Now - _transcriptionStartTime).TotalSeconds;
 
-        // Always show elapsed time
-        var elapsedSpan = TimeSpan.FromSeconds(elapsed);
-        ElapsedTimeLabel.Text = elapsedSpan.TotalMinutes >= 1
-            ? L.Localize(StringKeys.ElapsedMinutes, (int)elapsedSpan.TotalMinutes, elapsedSpan.Seconds)
-            : L.Localize(StringKeys.Elapsed, elapsed);
+        // Sanity check - ignore if elapsed is unreasonable
+        if (elapsedSeconds < 0.5 || elapsedSeconds > 86400)
+        {
+            return;
+        }
+
+        // Format and show elapsed time
+        int elapsedMins = (int)(elapsedSeconds / 60);
+        int elapsedSecs = (int)(elapsedSeconds % 60);
+
+        ElapsedTimeLabel.Text = elapsedMins >= 1
+            ? L.Localize(StringKeys.ElapsedMinutes, elapsedMins, elapsedSecs)
+            : L.Localize(StringKeys.Elapsed, (int)elapsedSeconds);
         ElapsedTimeLabel.IsVisible = true;
 
-        if (progress <= 5 || progress >= 100)
+        // Only show remaining time if progress is meaningful (between 5% and 99%)
+        if (progress < 5 || progress >= 99)
         {
-            // Hide remaining time if progress is too low or complete
             TimeSeparatorLabel.IsVisible = false;
             EstimatedTimeLabel.IsVisible = false;
             return;
         }
 
-        var progressDelta = progress - _lastProgressValue;
+        // Calculate remaining time: total = elapsed / (progress%), remaining = total - elapsed
+        double progressFraction = progress / 100.0;
+        double totalSeconds = elapsedSeconds / progressFraction;
+        double remainingSeconds = totalSeconds - elapsedSeconds;
 
-        if (progressDelta > 0)
+        // HARD GUARD: Never show negative or very small remaining time
+        if (remainingSeconds <= 0)
         {
-            var totalEstimated = elapsed / (progress / 100.0);
-            var remaining = totalEstimated - elapsed;
-
-            if (remaining > 0)
-            {
-                var remainingSpan = TimeSpan.FromSeconds(remaining);
-                EstimatedTimeLabel.Text = remainingSpan.TotalMinutes >= 1
-                    ? L.Localize(StringKeys.RemainingMinutes, remainingSpan.Minutes, remainingSpan.Seconds)
-                    : L.Localize(StringKeys.Remaining, remainingSpan.Seconds);
-                TimeSeparatorLabel.IsVisible = true;
-                EstimatedTimeLabel.IsVisible = true;
-            }
+            TimeSeparatorLabel.IsVisible = false;
+            EstimatedTimeLabel.IsVisible = false;
+            return;
         }
-        _lastProgressValue = progress;
+
+        // Format remaining time - use Math.Abs as absolute failsafe against negative display
+        int remainingMins = (int)(Math.Abs(remainingSeconds) / 60);
+        int remainingSecs = (int)(Math.Abs(remainingSeconds) % 60);
+
+        // Final sanity check before display
+        if (remainingMins < 0 || remainingSecs < 0)
+        {
+            TimeSeparatorLabel.IsVisible = false;
+            EstimatedTimeLabel.IsVisible = false;
+            return;
+        }
+
+        EstimatedTimeLabel.Text = remainingMins >= 1
+            ? L.Localize(StringKeys.RemainingMinutes, remainingMins, remainingSecs)
+            : L.Localize(StringKeys.Remaining, remainingSecs);
+        TimeSeparatorLabel.IsVisible = true;
+        EstimatedTimeLabel.IsVisible = true;
     }
 
     private List<AudioSegment> ExtractSegmentsFromResult(SpeechToText.TranscriptionResult result)

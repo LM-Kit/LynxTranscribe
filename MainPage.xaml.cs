@@ -68,7 +68,6 @@ public partial class MainPage : ContentPage
 
     // Estimated time tracking
     private DateTime _transcriptionStartTime;
-    private double _lastProgressValue = 0;
 
     // Font size - use defaults from AppSettingsService
     private double _transcriptFontSize = AppSettingsService.Defaults.TranscriptFontSize;

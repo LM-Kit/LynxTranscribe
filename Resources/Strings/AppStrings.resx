@@ -241,10 +241,10 @@
     <value>{0}m {1}s elapsed</value>
   </data>
   <data name="Remaining" xml:space="preserve">
-    <value>~{0}s remaining</value>
+    <value>{0}s remaining</value>
   </data>
   <data name="RemainingMinutes" xml:space="preserve">
-    <value>~{0}m {1}s remaining</value>
+    <value>{0}m {1}s remaining</value>
   </data>
 
   <!-- Playback -->
