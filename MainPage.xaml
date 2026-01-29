@@ -1055,9 +1055,29 @@
                                     </VerticalStackLayout>
 
                                     <Label x:Name="SupportedFormatsLabel"
-                                           Text="Supports WAV, MP3, FLAC, OGG, M4A"
+                                           Text="Supports WAV, MP3, FLAC, OGG, M4A, MP4, AVI, MOV"
                                            FontSize="12"
                                            TextColor="{DynamicResource TextMuted}"
+                                           HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+
+                                <!-- Loading State: Shown while file is being loaded -->
+                                <VerticalStackLayout x:Name="FileLoadingPanel" Spacing="20" HorizontalOptions="Center" IsVisible="False">
+                                    <ActivityIndicator IsRunning="True" 
+                                                       Color="{DynamicResource AccentPrimary}" 
+                                                       HeightRequest="48" 
+                                                       WidthRequest="48" />
+                                    <Label x:Name="LoadingFileName"
+                                           Text=""
+                                           FontSize="15"
+                                           FontAttributes="Bold"
+                                           TextColor="{DynamicResource TextPrimary}"
+                                           HorizontalOptions="Center"
+                                           MaximumWidthRequest="350"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Text="{l:Translate ExtractingAudio}"
+                                           FontSize="13"
+                                           TextColor="{DynamicResource TextSecondary}"
                                            HorizontalOptions="Center" />
                                 </VerticalStackLayout>
 

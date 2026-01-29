@@ -250,4 +250,8 @@ public static class StringKeys
     public const string ResourceLevelPerformance = "ResourceLevelPerformance";
     public const string ResourceLevelMaximum = "ResourceLevelMaximum";
     public const string UsingThreads = "UsingThreads";
+
+    // File loading
+    public const string LoadingFile = "LoadingFile";
+    public const string ExtractingAudio = "ExtractingAudio";
 }
