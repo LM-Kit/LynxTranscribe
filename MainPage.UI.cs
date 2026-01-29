@@ -484,10 +484,10 @@ public partial class MainPage
 
     private async Task LoadDroppedFile(string filePath)
     {
-        if (!AppConstants.IsSupportedAudioFile(filePath))
+        if (!AppConstants.IsSupportedMediaFile(filePath))
         {
             var ext = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
-            ShowError("Unsupported Format", $"The file format '{ext}' is not supported.\n\nSupported formats: WAV, MP3, FLAC, OGG, M4A, WMA");
+            ShowError("Unsupported Format", $"The file format '{ext}' is not supported.\n\nSupported formats: {AppConstants.SupportedFormatsDisplay}");
             return;
         }
 

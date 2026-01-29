@@ -254,9 +254,8 @@ public partial class MainPage
                 var displayName = record.DisplayName;
                 if (!string.IsNullOrEmpty(displayName))
                 {
-                    // Remove common audio extensions if present in display name
-                    var extensions = new[] { ".wav", ".mp3", ".m4a", ".flac", ".ogg", ".aac" };
-                    foreach (var ext in extensions)
+                    // Remove media extensions if present in display name
+                    foreach (var ext in AppConstants.SupportedMediaExtensions)
                     {
                         if (displayName.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
                         {

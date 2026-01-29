@@ -14,6 +14,7 @@
   <a href="#usage">Usage</a> •
   <a href="#building">Building</a> •
   <a href="#architecture">Architecture</a> •
+  <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
 
@@ -55,7 +56,15 @@ LynxTranscribe is a cross-platform desktop application for transcribing audio fi
 ### Core Transcription
 - **File Transcription** - Drag & drop or browse to transcribe audio files
 - **Live Recording** - Record and transcribe directly from your microphone
-- **Multiple Formats** - Supports WAV, MP3, FLAC, OGG, M4A, WMA
+- **Multiple Formats** - Supports a wide range of audio and video formats
+
+### Supported Formats
+
+| Audio | Video |
+|-------|-------|
+| WAV, MP3, FLAC, OGG, M4A, WMA, AAC | MP4, AVI, MOV |
+
+Audio is automatically extracted from video files during transcription using Windows Media Foundation.
 
 ### Smart Processing
 - **Voice Activity Detection (VAD)** - Automatically detects speech segments
@@ -78,6 +87,13 @@ LynxTranscribe is a cross-platform desktop application for transcribing audio fi
 - **Adjustable Font Size** - Zoom in/out with Ctrl+Mouse wheel
 - **Resizable Panels** - Customize your workspace
 - **Language Selection** - UI available in English and French
+
+## Requirements
+
+- **Windows**: Windows 10 version 1809 or later
+- **macOS**: macOS 15.0 (Catalina) or later
+
+No additional dependencies required. Video format support uses Windows Media Foundation which is built into Windows.
 
 ## Usage
 
@@ -185,6 +201,24 @@ Settings are stored in user preferences and include:
 - **Storage Paths** - Custom locations for models, history, recordings
 - **Theme** - Dark or light mode
 - **Language** - UI language preference
+
+## Contributing
+
+Pull requests are welcome and will be reviewed by our team.
+
+### How to Contribute
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Guidelines
+
+- Follow existing code style and conventions
+- Test on both Windows and macOS when possible
+- For major changes, please open an issue first to discuss what you would like to change
 
 ## License
 
