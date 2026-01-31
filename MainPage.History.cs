@@ -940,10 +940,12 @@ public partial class MainPage
 
         if (newIndex != currentIndex || string.IsNullOrEmpty(_currentRecordId))
         {
-            var record = _historyService.GetById(records[newIndex].Id);
+            var targetId = records[newIndex].Id;
+            var record = _historyService.GetById(targetId);
             if (record != null)
             {
                 LoadHistoryRecord(record, autoPlay: false);
+                ScrollHistoryItemIntoView(targetId);
             }
         }
     }
@@ -982,11 +984,36 @@ public partial class MainPage
 
         if (newIndex != currentIndex)
         {
-            var record = _historyService.GetById(records[newIndex].Id);
+            var targetId = records[newIndex].Id;
+            var record = _historyService.GetById(targetId);
             if (record != null)
             {
                 LoadHistoryRecord(record, autoPlay: false);
+                ScrollHistoryItemIntoView(targetId);
             }
+        }
+    }
+
+    /// <summary>
+    /// Scrolls the history list to make the specified item visible
+    /// </summary>
+    private void ScrollHistoryItemIntoView(string recordId)
+    {
+        if (_historyItemCache.TryGetValue(recordId, out var border))
+        {
+            // Use Dispatcher to ensure layout is complete before scrolling
+            Dispatcher.Dispatch(async () =>
+            {
+                await Task.Delay(50); // Small delay to ensure layout is updated
+                try
+                {
+                    await HistoryScrollView.ScrollToAsync(border, ScrollToPosition.MakeVisible, true);
+                }
+                catch
+                {
+                    // Ignore scroll errors
+                }
+            });
         }
     }
 
