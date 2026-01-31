@@ -47,7 +47,7 @@
         <Border Grid.Row="0" 
                 BackgroundColor="{DynamicResource BackgroundSecondary}"
                 StrokeThickness="0">
-            <Grid Padding="24,16" ColumnDefinitions="Auto,*,Auto,Auto">
+            <Grid Padding="24,16" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
 
                 <!-- App Branding (Icon + Name) - Left side -->
                 <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
@@ -57,14 +57,14 @@
                            Aspect="AspectFit"
                            VerticalOptions="Center" />
                     <HorizontalStackLayout Spacing="0" VerticalOptions="Center">
-                        <Label Text="Lynx" 
-                               FontSize="20" 
-                               FontAttributes="Bold" 
+                        <Label Text="Lynx"
+                               FontSize="20"
+                               FontAttributes="Bold"
                                TextColor="{DynamicResource AccentPrimary}"
                                VerticalOptions="Center" />
-                        <Label Text="Transcribe" 
-                               FontSize="20" 
-                               FontAttributes="Bold" 
+                        <Label Text="Transcribe"
+                               FontSize="20"
+                               FontAttributes="Bold"
                                TextColor="{DynamicResource TextPrimary}"
                                VerticalOptions="Center" />
                     </HorizontalStackLayout>
@@ -94,9 +94,34 @@
                     </Border.GestureRecognizers>
                 </Border>
 
+                <!-- Keyboard Shortcuts Help Button -->
+                <Border x:Name="ShortcutsButtonBorder"
+                        Grid.Column="3"
+                        BackgroundColor="{DynamicResource BackgroundTertiary}"
+                        StrokeShape="RoundRectangle 8"
+                        Stroke="{DynamicResource SurfaceBorder}"
+                        StrokeThickness="1"
+                        HeightRequest="36"
+                        WidthRequest="36"
+                        Padding="0"
+                        Margin="0,0,8,0"
+                        ToolTipProperties.Text="{l:Translate KeyboardShortcuts}">
+                    <Label x:Name="ShortcutsButtonLabel"
+                           Text="?"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource TextSecondary}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnShortcutsButtonClicked" />
+                        <PointerGestureRecognizer PointerEntered="OnShortcutsButtonHoverEnter" PointerExited="OnShortcutsButtonHoverExit" />
+                    </Border.GestureRecognizers>
+                </Border>
+
                 <!-- Settings Button (far right) -->
                 <Border x:Name="SettingsButtonBorder"
-                        Grid.Column="3"
+                        Grid.Column="4"
                         BackgroundColor="{DynamicResource BackgroundTertiary}"
                         StrokeShape="RoundRectangle 8"
                         Stroke="{DynamicResource SurfaceBorder}"

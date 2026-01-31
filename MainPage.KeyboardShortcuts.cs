@@ -52,6 +52,33 @@ public partial class MainPage
         ApplyStyle(CloseShortcutsButton, ControlStyle.ButtonTransparent);
     }
 
+    private void OnShortcutsButtonClicked(object? sender, TappedEventArgs e)
+    {
+        ShowKeyboardShortcutsPanel();
+    }
+
+    private void OnShortcutsButtonHoverEnter(object? sender, PointerEventArgs e)
+    {
+        var accentSurface = (Color)Resources["AccentSurface"]!;
+        var accentMuted = (Color)Resources["AccentMuted"]!;
+        var accentText = (Color)Resources["AccentText"]!;
+
+        ShortcutsButtonBorder.BackgroundColor = accentSurface;
+        ShortcutsButtonBorder.Stroke = accentMuted;
+        ShortcutsButtonLabel.TextColor = accentText;
+    }
+
+    private void OnShortcutsButtonHoverExit(object? sender, PointerEventArgs e)
+    {
+        var backgroundTertiary = (Color)Resources["BackgroundTertiary"]!;
+        var surfaceBorder = (Color)Resources["SurfaceBorder"]!;
+        var textSecondary = (Color)Resources["TextSecondary"]!;
+
+        ShortcutsButtonBorder.BackgroundColor = backgroundTertiary;
+        ShortcutsButtonBorder.Stroke = surfaceBorder;
+        ShortcutsButtonLabel.TextColor = textSecondary;
+    }
+
     /// <summary>
     /// Refreshes localized strings for keyboard shortcuts panel
     /// </summary>
