@@ -731,4 +731,34 @@
   <data name="ShortcutShowShortcuts" xml:space="preserve">
     <value>Afficher les raccourcis clavier</value>
   </data>
+  <data name="ShortcutStartTranscription" xml:space="preserve">
+    <value>Démarrer la transcription</value>
+  </data>
+  <data name="ShortcutStartRecording" xml:space="preserve">
+    <value>Démarrer / Arrêter l'enregistrement</value>
+  </data>
+  <data name="ShortcutSwitchTabs" xml:space="preserve">
+    <value>Basculer Audio / Historique</value>
+  </data>
+  <data name="ShortcutCopyTranscript" xml:space="preserve">
+    <value>Copier la transcription</value>
+  </data>
+  <data name="ShortcutJumpStart" xml:space="preserve">
+    <value>Aller au début</value>
+  </data>
+  <data name="ShortcutJumpEnd" xml:space="preserve">
+    <value>Aller à la fin</value>
+  </data>
+  <data name="ShortcutSpeedUp" xml:space="preserve">
+    <value>Augmenter la vitesse</value>
+  </data>
+  <data name="ShortcutSpeedDown" xml:space="preserve">
+    <value>Réduire la vitesse</value>
+  </data>
+  <data name="ShortcutToggleView" xml:space="preserve">
+    <value>Basculer Segments / Document</value>
+  </data>
+  <data name="ShortcutClearFile" xml:space="preserve">
+    <value>Effacer le fichier actuel</value>
+  </data>
 </root>

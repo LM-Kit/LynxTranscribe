@@ -3173,8 +3173,8 @@
                     Stroke="{DynamicResource SurfaceBorder}"
                     StrokeThickness="1"
                     Padding="0"
-                    WidthRequest="420"
-                    MaximumHeightRequest="500"
+                    WidthRequest="480"
+                    MaximumHeightRequest="650"
                     HorizontalOptions="Center"
                     VerticalOptions="Center">
                 <Border.Shadow>
@@ -3279,6 +3279,46 @@
                                                 <Label Text="F1" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
                                             </Border>
                                         </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutStartTranscriptionLabel" Text="Start transcription" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="4">
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="Ctrl" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="T" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutStartRecordingLabel" Text="Start / Stop recording" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="4">
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="Ctrl" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="R" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutSwitchTabsLabel" Text="Switch Audio / History tabs" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="Tab" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutClearFileLabel" Text="Clear current file" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="Delete" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
                                     </VerticalStackLayout>
                                 </Border>
                             </VerticalStackLayout>
@@ -3309,6 +3349,34 @@
                                             <Label x:Name="ShortcutSeekForwardLabel" Text="Seek forward 5s" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
                                             <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
                                                 <Label Text="→" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutJumpStartLabel" Text="Jump to beginning" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="Home" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutJumpEndLabel" Text="Jump to end" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="End" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutSpeedUpLabel" Text="Increase playback speed" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="]" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                            </Border>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutSpeedDownLabel" Text="Decrease playback speed" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                <Label Text="[" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
                                             </Border>
                                         </Grid>
                                     </VerticalStackLayout>
@@ -3358,6 +3426,36 @@
                                                 <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
                                                 <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
                                                     <Label Text="F3" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutCopyTranscriptLabel" Text="Copy transcript to clipboard" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="4">
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="Ctrl" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="Shift" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="C" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutToggleViewLabel" Text="Toggle Segments / Document view" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="4">
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="Ctrl" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Label Text="+" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="D" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
                                                 </Border>
                                             </HorizontalStackLayout>
                                         </Grid>

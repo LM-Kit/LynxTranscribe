@@ -92,17 +92,31 @@ public partial class MainPage
         ShortcutCategoryPlaybackLabel.Text = L.Localize(StringKeys.ShortcutCategoryPlayback);
         ShortcutCategoryTranscriptLabel.Text = L.Localize(StringKeys.ShortcutCategoryTranscript);
 
-        // Shortcut descriptions
+        // Shortcut descriptions - General
         ShortcutOpenFileLabel.Text = L.Localize(StringKeys.ShortcutOpenFile);
         ShortcutExportLabel.Text = L.Localize(StringKeys.ShortcutExport);
         ShortcutClosePanelLabel.Text = L.Localize(StringKeys.ShortcutClosePanel);
         ShortcutShowShortcutsLabel.Text = L.Localize(StringKeys.ShortcutShowShortcuts);
+        ShortcutStartTranscriptionLabel.Text = L.Localize(StringKeys.ShortcutStartTranscription);
+        ShortcutStartRecordingLabel.Text = L.Localize(StringKeys.ShortcutStartRecording);
+        ShortcutSwitchTabsLabel.Text = L.Localize(StringKeys.ShortcutSwitchTabs);
+        ShortcutClearFileLabel.Text = L.Localize(StringKeys.ShortcutClearFile);
+
+        // Shortcut descriptions - Playback
         ShortcutPlayPauseLabel.Text = L.Localize(StringKeys.ShortcutPlayPause);
         ShortcutSeekBackLabel.Text = L.Localize(StringKeys.ShortcutSeekBack);
         ShortcutSeekForwardLabel.Text = L.Localize(StringKeys.ShortcutSeekForward);
+        ShortcutJumpStartLabel.Text = L.Localize(StringKeys.ShortcutJumpStart);
+        ShortcutJumpEndLabel.Text = L.Localize(StringKeys.ShortcutJumpEnd);
+        ShortcutSpeedUpLabel.Text = L.Localize(StringKeys.ShortcutSpeedUp);
+        ShortcutSpeedDownLabel.Text = L.Localize(StringKeys.ShortcutSpeedDown);
+
+        // Shortcut descriptions - Transcript
         ShortcutSearchLabel.Text = L.Localize(StringKeys.ShortcutSearch);
         ShortcutNextMatchLabel.Text = L.Localize(StringKeys.ShortcutNextMatch);
         ShortcutPrevMatchLabel.Text = L.Localize(StringKeys.ShortcutPrevMatch);
+        ShortcutCopyTranscriptLabel.Text = L.Localize(StringKeys.ShortcutCopyTranscript);
+        ShortcutToggleViewLabel.Text = L.Localize(StringKeys.ShortcutToggleView);
 
         // Footer
         ShortcutFooterHint.Text = L.Localize(StringKeys.PressEscToClose);

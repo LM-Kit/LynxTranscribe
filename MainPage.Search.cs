@@ -585,6 +585,142 @@ public partial class MainPage
             MainThread.BeginInvokeOnMainThread(() => ToggleKeyboardShortcutsPanel());
             e.Handled = true;
         }
+        // Ctrl+T - Start transcription
+        else if (ctrlPressed && e.Key == Windows.System.VirtualKey.T)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                // Only start transcription if we have a file loaded and are on Audio tab
+                if (_selectedFilePath != null && _isFileTabActive && TranscribeButton.IsVisible)
+                {
+                    OnTranscribeClicked(null, EventArgs.Empty);
+                }
+            });
+            e.Handled = true;
+        }
+        // Ctrl+R - Start/Stop recording
+        else if (ctrlPressed && e.Key == Windows.System.VirtualKey.R)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                // Switch to Audio tab if needed, then toggle recording
+                if (!_isFileTabActive)
+                {
+                    OnFileTabClicked(null, null!);
+                }
+                OnRecordClicked(null, null!);
+            });
+            e.Handled = true;
+        }
+        // Tab - Switch between Audio and History tabs (when not in text entry)
+        else if (e.Key == Windows.System.VirtualKey.Tab && !SearchEntry.IsFocused && !_isEditMode)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (_isFileTabActive)
+                {
+                    OnHistoryTabClicked(null, null!);
+                }
+                else
+                {
+                    OnFileTabClicked(null, null!);
+                }
+            });
+            e.Handled = true;
+        }
+        // Ctrl+Shift+C - Copy transcript to clipboard
+        else if (ctrlPressed && shiftPressed && e.Key == Windows.System.VirtualKey.C)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (_currentSegments.Count > 0)
+                {
+                    OnCopyClicked(null, null!);
+                }
+            });
+            e.Handled = true;
+        }
+        // Home - Jump to beginning of audio
+        else if (e.Key == Windows.System.VirtualKey.Home && !SearchEntry.IsFocused && !_isEditMode)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (PlayerPanel.IsVisible && _selectedFilePath != null)
+                {
+                    _audioPlayer.Seek(TimeSpan.Zero);
+                }
+                else if (!string.IsNullOrEmpty(_historyAudioFilePath))
+                {
+                    _historyAudioPlayer.Seek(TimeSpan.Zero);
+                }
+            });
+            e.Handled = true;
+        }
+        // End - Jump to end of audio
+        else if (e.Key == Windows.System.VirtualKey.End && !SearchEntry.IsFocused && !_isEditMode)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (PlayerPanel.IsVisible && _selectedFilePath != null)
+                {
+                    _audioPlayer.Seek(_audioPlayer.Duration);
+                }
+                else if (!string.IsNullOrEmpty(_historyAudioFilePath))
+                {
+                    _historyAudioPlayer.Seek(_historyAudioPlayer.Duration);
+                }
+            });
+            e.Handled = true;
+        }
+        // ] - Increase playback speed
+        else if (e.Key == Windows.System.VirtualKey.Number221 && !SearchEntry.IsFocused) // ] key
+        {
+            MainThread.BeginInvokeOnMainThread(() => OnSpeedIncreaseClicked(null, null!));
+            e.Handled = true;
+        }
+        // [ - Decrease playback speed
+        else if (e.Key == Windows.System.VirtualKey.Number219 && !SearchEntry.IsFocused) // [ key
+        {
+            MainThread.BeginInvokeOnMainThread(() => OnSpeedDecreaseClicked(null, null!));
+            e.Handled = true;
+        }
+        // Ctrl+, - Open settings
+        else if (ctrlPressed && e.Key == Windows.System.VirtualKey.Number188) // , key
+        {
+            MainThread.BeginInvokeOnMainThread(() => OnSettingsClicked(null, null!));
+            e.Handled = true;
+        }
+        // Ctrl+D - Toggle view mode (Segments/Document)
+        else if (ctrlPressed && e.Key == Windows.System.VirtualKey.D)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (_currentSegments.Count > 0)
+                {
+                    if (_isDocumentView)
+                    {
+                        OnViewModeSegmentsClicked(null, null!);
+                    }
+                    else
+                    {
+                        OnViewModeDocumentClicked(null, null!);
+                    }
+                }
+            });
+            e.Handled = true;
+        }
+        // Delete - Clear current file
+        else if (e.Key == Windows.System.VirtualKey.Delete && !SearchEntry.IsFocused && !_isEditMode)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (_selectedFilePath != null && _isFileTabActive)
+                {
+                    OnClearFileClicked(null, null!);
+                }
+            });
+            e.Handled = true;
+        }
     }
 #endif
 

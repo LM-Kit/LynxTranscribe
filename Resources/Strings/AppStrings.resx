@@ -731,4 +731,34 @@
   <data name="ShortcutShowShortcuts" xml:space="preserve">
     <value>Show keyboard shortcuts</value>
   </data>
+  <data name="ShortcutStartTranscription" xml:space="preserve">
+    <value>Start transcription</value>
+  </data>
+  <data name="ShortcutStartRecording" xml:space="preserve">
+    <value>Start / Stop recording</value>
+  </data>
+  <data name="ShortcutSwitchTabs" xml:space="preserve">
+    <value>Switch Audio / History tabs</value>
+  </data>
+  <data name="ShortcutCopyTranscript" xml:space="preserve">
+    <value>Copy transcript to clipboard</value>
+  </data>
+  <data name="ShortcutJumpStart" xml:space="preserve">
+    <value>Jump to beginning</value>
+  </data>
+  <data name="ShortcutJumpEnd" xml:space="preserve">
+    <value>Jump to end</value>
+  </data>
+  <data name="ShortcutSpeedUp" xml:space="preserve">
+    <value>Increase playback speed</value>
+  </data>
+  <data name="ShortcutSpeedDown" xml:space="preserve">
+    <value>Decrease playback speed</value>
+  </data>
+  <data name="ShortcutToggleView" xml:space="preserve">
+    <value>Toggle Segments / Document view</value>
+  </data>
+  <data name="ShortcutClearFile" xml:space="preserve">
+    <value>Clear current file</value>
+  </data>
 </root>

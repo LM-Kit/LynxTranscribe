@@ -272,4 +272,14 @@ public static class StringKeys
     public const string ShortcutNextMatch = "ShortcutNextMatch";
     public const string ShortcutPrevMatch = "ShortcutPrevMatch";
     public const string ShortcutShowShortcuts = "ShortcutShowShortcuts";
+    public const string ShortcutStartTranscription = "ShortcutStartTranscription";
+    public const string ShortcutStartRecording = "ShortcutStartRecording";
+    public const string ShortcutSwitchTabs = "ShortcutSwitchTabs";
+    public const string ShortcutCopyTranscript = "ShortcutCopyTranscript";
+    public const string ShortcutJumpStart = "ShortcutJumpStart";
+    public const string ShortcutJumpEnd = "ShortcutJumpEnd";
+    public const string ShortcutSpeedUp = "ShortcutSpeedUp";
+    public const string ShortcutSpeedDown = "ShortcutSpeedDown";
+    public const string ShortcutToggleView = "ShortcutToggleView";
+    public const string ShortcutClearFile = "ShortcutClearFile";
 }
