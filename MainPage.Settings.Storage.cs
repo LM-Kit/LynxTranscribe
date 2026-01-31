@@ -114,11 +114,19 @@ public partial class MainPage
 
         return tcs.Task;
 #else
-        return Task.Run(async () =>
+        try
         {
             var result = await FolderPicker.Default.PickAsync(CancellationToken.None);
-            return result.IsSuccessful ? result.Folder?.Path : null;
-        });
+            if (result.IsSuccessful && result.Folder != null)
+            {
+                return result.Folder.Path;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"FolderPicker error: {ex.Message}");
+        }
+        return null;
 #endif
     }
 
@@ -165,6 +173,8 @@ public partial class MainPage
             }
 #if WINDOWS
             System.Diagnostics.Process.Start("explorer.exe", path);
+#elif MACCATALYST
+            System.Diagnostics.Process.Start("open", path);
 #endif
         }
         catch (Exception ex)

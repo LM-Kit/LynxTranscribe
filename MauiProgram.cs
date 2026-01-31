@@ -105,58 +105,27 @@ namespace LynxTranscribe
                 }
             });
 
-            Microsoft.Maui.Handlers.CheckBoxHandler.Mapper.AppendToMapping("MacCatalystCheckBox", (handler, view) =>
+            Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("MacCatalystPicker", (handler, view) =>
             {
-                if (handler.PlatformView != null)
+                if (handler.PlatformView is UITextField textField)
                 {
-                    var checkbox = handler.PlatformView;
-                    checkbox.Transform = CGAffineTransform.MakeScale(0.65f, 0.65f);
-                    checkbox.TintColor = UIColor.FromRGB(245, 158, 11);
-                    
-                    var accentColor = UIColor.FromRGB(245, 158, 11);
-                    
-                    var checkedSize = new CGSize(22, 22);
-                    UIGraphics.BeginImageContextWithOptions(checkedSize, false, 0);
-                    var ctx = UIGraphics.GetCurrentContext();
-                    if (ctx != null)
+                    textField.BackgroundColor = UIColor.FromRGB(24, 24, 27);
+                    textField.TextColor = UIColor.White;
+                    textField.Font = UIFont.SystemFontOfSize(14);
+                    textField.TintColor = UIColor.FromRGB(245, 158, 11);
+                    textField.Layer.CornerRadius = 8;
+                    textField.Layer.BorderWidth = 1;
+                    textField.Layer.BorderColor = UIColor.FromRGB(63, 63, 70).CGColor;
+                }
+            });
+
+            Microsoft.Maui.Handlers.LabelHandler.Mapper.AppendToMapping("MacCatalystLabel", (handler, view) =>
+            {
+                if (handler.PlatformView is UILabel label)
+                {
+                    if (label.Font.PointSize < 12)
                     {
-                        ctx.SetFillColor(accentColor.CGColor);
-                        var bgRect = new CGRect(0, 0, 22, 22);
-                        var bgPath = UIBezierPath.FromRoundedRect(bgRect, 4);
-                        ctx.AddPath(bgPath.CGPath);
-                        ctx.FillPath();
-                        
-                        ctx.SetStrokeColor(UIColor.White.CGColor);
-                        ctx.SetLineWidth(2.5f);
-                        ctx.SetLineCap(CGLineCap.Round);
-                        ctx.SetLineJoin(CGLineJoin.Round);
-                        ctx.MoveTo(5, 11);
-                        ctx.AddLineToPoint(9, 15);
-                        ctx.AddLineToPoint(17, 7);
-                        ctx.StrokePath();
-                    }
-                    var checkedImage = UIGraphics.GetImageFromCurrentImageContext();
-                    UIGraphics.EndImageContext();
-                    
-                    var uncheckedSize = new CGSize(22, 22);
-                    UIGraphics.BeginImageContextWithOptions(uncheckedSize, false, 0);
-                    ctx = UIGraphics.GetCurrentContext();
-                    if (ctx != null)
-                    {
-                        ctx.SetStrokeColor(UIColor.FromRGB(100, 100, 100).CGColor);
-                        ctx.SetLineWidth(1.5f);
-                        var borderRect = new CGRect(1, 1, 20, 20);
-                        var borderPath = UIBezierPath.FromRoundedRect(borderRect, 4);
-                        ctx.AddPath(borderPath.CGPath);
-                        ctx.StrokePath();
-                    }
-                    var uncheckedImage = UIGraphics.GetImageFromCurrentImageContext();
-                    UIGraphics.EndImageContext();
-                    
-                    if (checkbox is UIButton button && checkedImage != null && uncheckedImage != null)
-                    {
-                        button.SetImage(uncheckedImage, UIControlState.Normal);
-                        button.SetImage(checkedImage, UIControlState.Selected);
+                        label.Font = UIFont.SystemFontOfSize(label.Font.PointSize * 1.15f);
                     }
                 }
             });
