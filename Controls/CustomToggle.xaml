@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LynxTranscribe.Controls.CustomToggle"
+             HeightRequest="24"
+             WidthRequest="44">
+    <Border x:Name="ToggleBackground"
+            BackgroundColor="#3F3F46"
+            StrokeShape="RoundRectangle 12"
+            Stroke="Transparent"
+            StrokeThickness="0"
+            HeightRequest="24"
+            WidthRequest="44">
+        <Border x:Name="ToggleThumb"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10"
+                Stroke="Transparent"
+                HeightRequest="20"
+                WidthRequest="20"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Margin="2,0,0,0">
+            <Border.Shadow>
+                <Shadow Brush="#40000000" Offset="0,1" Radius="2" Opacity="0.3" />
+            </Border.Shadow>
+        </Border>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnToggleTapped" />
+        </Border.GestureRecognizers>
+    </Border>
+</ContentView>

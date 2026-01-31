@@ -137,7 +137,7 @@ public partial class MainPage
     {
         var newValue = !_settingsService.AutoTranscribeOnImport;
         _settingsService.AutoTranscribeOnImport = newValue;
-        AutoTranscribeSwitch.IsToggled = newValue;
+        AutoTranscribeToggle.IsToggled = newValue;
         UpdateAutoTranscribeInlineUI();
     }
 
@@ -227,7 +227,7 @@ public partial class MainPage
     private void OnDictationToggleClicked(object? sender, TappedEventArgs e)
     {
         // Toggle the switch - OnDictationFormattingToggled handles all updates
-        DictationFormattingSwitch.IsToggled = !DictationFormattingSwitch.IsToggled;
+        DictationFormattingToggle.IsToggled = !DictationFormattingToggle.IsToggled;
     }
 
     /// <summary>
