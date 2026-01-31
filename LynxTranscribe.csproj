@@ -100,6 +100,14 @@
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
 		<PackageReference Include="LM-Kit.NET.Backend.Cuda13.Windows" Version="2026.1.5" />
 	</ItemGroup>
+
+	<!-- Mac Catalyst asset catalog for dock icon -->
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\Contents.json" />
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\Contents.json" />
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\*.png" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PRIResource Remove="design\**" />
 	</ItemGroup>

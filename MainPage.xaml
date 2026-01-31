@@ -70,7 +70,7 @@
                 </HorizontalStackLayout>
 
                 <!-- Spacer -->
-                <BoxView Grid.Column="1" Color="Transparent" />
+                <ContentView Grid.Column="1" BackgroundColor="Transparent" InputTransparent="True" />
 
                 <!-- Cancel Transcription Button (shown during transcription) -->
                 <Border x:Name="HeaderCancelButton"
@@ -455,7 +455,7 @@
                                             <Label x:Name="TotalTimeLabel" Text="0:00" FontSize="10" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
                                         </HorizontalStackLayout>
                                         
-                                        <BoxView Grid.Column="1" Color="Transparent" />
+                                        <ContentView Grid.Column="1" BackgroundColor="Transparent" InputTransparent="True" />
                                         
                                         <Label Grid.Column="2" Text="🔊" FontSize="10" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" Margin="0,0,4,0" />
                                         <Slider x:Name="VolumeSlider"
