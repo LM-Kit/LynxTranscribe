@@ -282,4 +282,5 @@ public static class StringKeys
     public const string ShortcutSpeedDown = "ShortcutSpeedDown";
     public const string ShortcutToggleView = "ShortcutToggleView";
     public const string ShortcutClearFile = "ShortcutClearFile";
+    public const string ShortcutNavigateHistory = "ShortcutNavigateHistory";
 }

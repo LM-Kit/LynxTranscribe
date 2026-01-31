@@ -904,5 +904,71 @@ public partial class MainPage
         UpdateHistoryBadge();
     }
 
+    /// <summary>
+    /// Navigate to the previous history item (Up arrow - newer item)
+    /// </summary>
+    private void NavigateHistoryPrevious()
+    {
+        if (_isFileTabActive) return;
+
+        var query = HistorySearchEntry.Text?.Trim() ?? "";
+        var records = string.IsNullOrEmpty(query)
+            ? _historyService.GetAllLightweight()
+            : _historyService.Search(query);
+
+        if (records.Count == 0) return;
+
+        // Find current index
+        int currentIndex = string.IsNullOrEmpty(_currentRecordId)
+            ? records.Count // Will result in selecting first item
+            : records.FindIndex(r => r.Id == _currentRecordId);
+
+        // Move to previous (newer) item
+        int newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = 0; // Stay at first item
+
+        if (newIndex != currentIndex || string.IsNullOrEmpty(_currentRecordId))
+        {
+            var record = _historyService.GetById(records[newIndex].Id);
+            if (record != null)
+            {
+                LoadHistoryRecord(record, autoPlay: false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Navigate to the next history item (Down arrow - older item)
+    /// </summary>
+    private void NavigateHistoryNext()
+    {
+        if (_isFileTabActive) return;
+
+        var query = HistorySearchEntry.Text?.Trim() ?? "";
+        var records = string.IsNullOrEmpty(query)
+            ? _historyService.GetAllLightweight()
+            : _historyService.Search(query);
+
+        if (records.Count == 0) return;
+
+        // Find current index
+        int currentIndex = string.IsNullOrEmpty(_currentRecordId)
+            ? -1 // Will result in selecting first item
+            : records.FindIndex(r => r.Id == _currentRecordId);
+
+        // Move to next (older) item
+        int newIndex = currentIndex + 1;
+        if (newIndex >= records.Count) newIndex = records.Count - 1; // Stay at last item
+
+        if (newIndex != currentIndex)
+        {
+            var record = _historyService.GetById(records[newIndex].Id);
+            if (record != null)
+            {
+                LoadHistoryRecord(record, autoPlay: false);
+            }
+        }
+    }
+
     #endregion
 }

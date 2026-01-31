@@ -541,6 +541,18 @@ public partial class MainPage
             });
             e.Handled = true;
         }
+        // Up Arrow - Navigate to previous history item (when on History tab)
+        else if (e.Key == Windows.System.VirtualKey.Up && !_isFileTabActive && !_isEditMode && !SearchEntry.IsFocused && !HistorySearchEntry.IsFocused)
+        {
+            MainThread.BeginInvokeOnMainThread(() => NavigateHistoryPrevious());
+            e.Handled = true;
+        }
+        // Down Arrow - Navigate to next history item (when on History tab)
+        else if (e.Key == Windows.System.VirtualKey.Down && !_isFileTabActive && !_isEditMode && !SearchEntry.IsFocused && !HistorySearchEntry.IsFocused)
+        {
+            MainThread.BeginInvokeOnMainThread(() => NavigateHistoryNext());
+            e.Handled = true;
+        }
         // Escape - Close settings/search/dropdown/shortcuts
         else if (e.Key == Windows.System.VirtualKey.Escape)
         {

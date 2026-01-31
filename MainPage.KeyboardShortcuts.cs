@@ -100,6 +100,7 @@ public partial class MainPage
         ShortcutStartTranscriptionLabel.Text = L.Localize(StringKeys.ShortcutStartTranscription);
         ShortcutStartRecordingLabel.Text = L.Localize(StringKeys.ShortcutStartRecording);
         ShortcutSwitchTabsLabel.Text = L.Localize(StringKeys.ShortcutSwitchTabs);
+        ShortcutNavigateHistoryLabel.Text = L.Localize(StringKeys.ShortcutNavigateHistory);
         ShortcutClearFileLabel.Text = L.Localize(StringKeys.ShortcutClearFile);
 
         // Shortcut descriptions - Playback

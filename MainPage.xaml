@@ -3314,6 +3314,18 @@
                                         </Grid>
                                         <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
                                         <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="ShortcutNavigateHistoryLabel" Text="Navigate history items" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <HorizontalStackLayout Spacing="4" Grid.Column="1">
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="↑" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                                <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
+                                                    <Label Text="↓" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{DynamicResource SurfaceBorderSubtle}" />
+                                        <Grid ColumnDefinitions="*,Auto">
                                             <Label x:Name="ShortcutClearFileLabel" Text="Clear current file" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
                                             <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 4" Stroke="{DynamicResource SurfaceBorder}" Padding="6,3">
                                                 <Label Text="Delete" FontSize="10" FontAttributes="Bold" TextColor="{DynamicResource TextSecondary}" />

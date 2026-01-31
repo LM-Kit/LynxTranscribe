@@ -761,4 +761,7 @@
   <data name="ShortcutClearFile" xml:space="preserve">
     <value>Clear current file</value>
   </data>
+  <data name="ShortcutNavigateHistory" xml:space="preserve">
+    <value>Navigate history items</value>
+  </data>
 </root>
