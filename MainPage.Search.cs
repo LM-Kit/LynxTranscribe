@@ -663,29 +663,29 @@ public partial class MainPage
             {
                 if (PlayerPanel.IsVisible && _selectedFilePath != null)
                 {
-                    _audioPlayer.Seek(_audioPlayer.Duration);
+                    _audioPlayer.Seek(_audioPlayer.TotalDuration);
                 }
                 else if (!string.IsNullOrEmpty(_historyAudioFilePath))
                 {
-                    _historyAudioPlayer.Seek(_historyAudioPlayer.Duration);
+                    _historyAudioPlayer.Seek(_historyAudioPlayer.TotalDuration);
                 }
             });
             e.Handled = true;
         }
         // ] - Increase playback speed
-        else if (e.Key == Windows.System.VirtualKey.Number221 && !SearchEntry.IsFocused) // ] key
+        else if (e.Key == (Windows.System.VirtualKey)221 && !SearchEntry.IsFocused) // ] key
         {
-            MainThread.BeginInvokeOnMainThread(() => OnSpeedIncreaseClicked(null, null!));
+            MainThread.BeginInvokeOnMainThread(() => OnSpeedFastClicked(null, null!));
             e.Handled = true;
         }
         // [ - Decrease playback speed
-        else if (e.Key == Windows.System.VirtualKey.Number219 && !SearchEntry.IsFocused) // [ key
+        else if (e.Key == (Windows.System.VirtualKey)219 && !SearchEntry.IsFocused) // [ key
         {
-            MainThread.BeginInvokeOnMainThread(() => OnSpeedDecreaseClicked(null, null!));
+            MainThread.BeginInvokeOnMainThread(() => OnSpeedSlowClicked(null, null!));
             e.Handled = true;
         }
         // Ctrl+, - Open settings
-        else if (ctrlPressed && e.Key == Windows.System.VirtualKey.Number188) // , key
+        else if (ctrlPressed && e.Key == (Windows.System.VirtualKey)188) // , key
         {
             MainThread.BeginInvokeOnMainThread(() => OnSettingsClicked(null, null!));
             e.Handled = true;
