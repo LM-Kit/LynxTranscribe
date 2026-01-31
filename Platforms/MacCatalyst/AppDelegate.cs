@@ -13,19 +13,28 @@ public class AppDelegate : MauiUIApplicationDelegate
         var result = base.FinishedLaunching(application, launchOptions);
 
 #if MACCATALYST
-        ConfigureMacWindow();
+        NSNotificationCenter.DefaultCenter.AddObserver(
+            UIScene.DidActivateNotification,
+            notification =>
+            {
+                if (notification.Object is UIWindowScene windowScene)
+                {
+                    ConfigureWindowScene(windowScene);
+                }
+            });
+
+        ConfigureAllWindowScenes();
 #endif
 
         return result;
     }
 
 #if MACCATALYST
-    private void ConfigureMacWindow()
+    private void ConfigureAllWindowScenes()
     {
         try
         {
-            var scenes = UIApplication.SharedApplication.ConnectedScenes;
-            foreach (var scene in scenes)
+            foreach (var scene in UIApplication.SharedApplication.ConnectedScenes)
             {
                 if (scene is UIWindowScene windowScene)
                 {
@@ -35,7 +44,7 @@ public class AppDelegate : MauiUIApplicationDelegate
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"ConfigureMacWindow error: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"ConfigureAllWindowScenes error: {ex.Message}");
         }
     }
 
@@ -46,12 +55,26 @@ public class AppDelegate : MauiUIApplicationDelegate
             if (windowScene.Titlebar != null)
             {
                 windowScene.Titlebar.TitleVisibility = UITitlebarTitleVisibility.Hidden;
+                windowScene.Titlebar.Toolbar = null;
+                windowScene.Titlebar.SeparatorStyle = UITitlebarSeparatorStyle.None;
             }
 
             if (windowScene.SizeRestrictions != null)
             {
                 windowScene.SizeRestrictions.MinimumSize = new CoreGraphics.CGSize(1024, 700);
                 windowScene.SizeRestrictions.MaximumSize = new CoreGraphics.CGSize(3840, 2160);
+            }
+
+            var darkColor = UIColor.FromRGB(10, 10, 11);
+            foreach (var window in windowScene.Windows)
+            {
+                window.BackgroundColor = darkColor;
+                window.OverrideUserInterfaceStyle = UIUserInterfaceStyle.Dark;
+                
+                if (window.RootViewController?.View != null)
+                {
+                    window.RootViewController.View.BackgroundColor = darkColor;
+                }
             }
         }
         catch (Exception ex)
