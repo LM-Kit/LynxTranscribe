@@ -1,11 +1,10 @@
+#if WINDOWS
 using NAudio.Wave;
+#endif
 
 namespace LynxTranscribe.Services;
 
-/// <summary>
-/// Service for recording audio from input devices.
-/// Records at 16kHz mono WAV format optimized for Whisper transcription.
-/// </summary>
+#if WINDOWS
 public class AudioRecorderService : IDisposable
 {
     private WaveInEvent? _waveIn;
@@ -16,7 +15,6 @@ public class AudioRecorderService : IDisposable
     private readonly object _lock = new();
     private string _recordingsDirectory;
 
-    // Target format for Whisper: 16kHz, mono, 16-bit
     private readonly WaveFormat _targetFormat = new(16000, 16, 1);
 
     public event EventHandler<TimeSpan>? DurationChanged;
@@ -29,40 +27,24 @@ public class AudioRecorderService : IDisposable
 
     public AudioRecorderService()
     {
-        // Default to temp directory
         _recordingsDirectory = Path.Combine(Path.GetTempPath(), "LynxTranscribe");
         Directory.CreateDirectory(_recordingsDirectory);
     }
 
-    /// <summary>
-    /// Sets the directory where recordings are stored.
-    /// </summary>
     public void SetRecordingsDirectory(string directory)
     {
-        if (string.IsNullOrEmpty(directory))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(directory)) return;
 
         try
         {
             Directory.CreateDirectory(directory);
             _recordingsDirectory = directory;
         }
-        catch
-        {
-            // Keep using current path if new path is invalid
-        }
+        catch { }
     }
 
-    /// <summary>
-    /// Gets the current recordings directory.
-    /// </summary>
     public string RecordingsDirectory => _recordingsDirectory;
 
-    /// <summary>
-    /// Gets available audio input devices.
-    /// </summary>
     public static List<AudioInputDevice> GetInputDevices()
     {
         var devices = new List<AudioInputDevice>();
@@ -81,24 +63,15 @@ public class AudioRecorderService : IDisposable
         return devices;
     }
 
-    /// <summary>
-    /// Starts recording from the specified device.
-    /// </summary>
-    /// <param name="deviceId">Device ID, or -1 for default device</param>
     public void StartRecording(int deviceId = -1)
     {
-        if (_isRecording)
-        {
-            return;
-        }
+        if (_isRecording) return;
 
         try
         {
-            // Create recording file in configured directory
             Directory.CreateDirectory(_recordingsDirectory);
             _currentFilePath = Path.Combine(_recordingsDirectory, $"recording_{DateTime.Now:yyyyMMdd_HHmmss}.wav");
 
-            // Setup wave input
             _waveIn = new WaveInEvent
             {
                 DeviceNumber = deviceId < 0 ? 0 : deviceId,
@@ -109,10 +82,8 @@ public class AudioRecorderService : IDisposable
             _waveIn.DataAvailable += OnDataAvailable;
             _waveIn.RecordingStopped += OnRecordingStoppedInternal;
 
-            // Create file writer
             _writer = new WaveFileWriter(_currentFilePath, _targetFormat);
 
-            // Start recording
             _waveIn.StartRecording();
             _isRecording = true;
             _recordingStartTime = DateTime.Now;
@@ -124,15 +95,9 @@ public class AudioRecorderService : IDisposable
         }
     }
 
-    /// <summary>
-    /// Stops recording and returns the path to the recorded file.
-    /// </summary>
     public string? StopRecording()
     {
-        if (!_isRecording)
-        {
-            return null;
-        }
+        if (!_isRecording) return null;
 
         lock (_lock)
         {
@@ -142,15 +107,9 @@ public class AudioRecorderService : IDisposable
             {
                 _waveIn?.StopRecording();
             }
-#if DEBUG
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"StopRecording: {ex.Message}"); }
-#else
-            catch { }
-#endif
 
             var filePath = _currentFilePath;
-
-            // Cleanup will be called by OnRecordingStoppedInternal
             return filePath;
         }
     }
@@ -159,35 +118,24 @@ public class AudioRecorderService : IDisposable
     {
         lock (_lock)
         {
-            if (!_isRecording || _writer == null)
-            {
-                return;
-            }
+            if (!_isRecording || _writer == null) return;
 
             try
             {
                 _writer.Write(e.Buffer, 0, e.BytesRecorded);
 
-                // Calculate audio level for visualization
                 float maxLevel = 0;
                 for (int i = 0; i < e.BytesRecorded; i += 2)
                 {
                     short sample = (short)(e.Buffer[i] | (e.Buffer[i + 1] << 8));
                     float level = Math.Abs(sample / 32768f);
-                    if (level > maxLevel)
-                    {
-                        maxLevel = level;
-                    }
+                    if (level > maxLevel) maxLevel = level;
                 }
 
                 LevelChanged?.Invoke(this, maxLevel);
                 DurationChanged?.Invoke(this, Duration);
             }
-#if DEBUG
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"OnDataAvailable: {ex.Message}"); }
-#else
-            catch { }
-#endif
         }
     }
 
@@ -215,11 +163,7 @@ public class AudioRecorderService : IDisposable
                 _writer?.Dispose();
                 _writer = null;
             }
-#if DEBUG
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Cleanup writer: {ex.Message}"); }
-#else
-            catch { }
-#endif
 
             try
             {
@@ -231,24 +175,17 @@ public class AudioRecorderService : IDisposable
                     _waveIn = null;
                 }
             }
-#if DEBUG
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Cleanup waveIn: {ex.Message}"); }
-#else
-            catch { }
-#endif
         }
     }
 
     public void Dispose()
     {
-        if (_isRecording)
-        {
-            StopRecording();
-        }
-
+        if (_isRecording) StopRecording();
         Cleanup();
     }
 }
+#endif
 
 public class AudioInputDevice
 {

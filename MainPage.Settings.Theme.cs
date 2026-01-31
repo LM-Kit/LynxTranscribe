@@ -23,7 +23,7 @@ public partial class MainPage
         UpdateThemeToggleUI(newDarkMode);
 
         // Sync settings panel switch
-        DarkModeSwitch.IsToggled = newDarkMode;
+        DarkModeToggle.IsToggled = newDarkMode;
     }
 
     /// <summary>
@@ -405,11 +405,11 @@ public partial class MainPage
 
     private void UpdateSettingsUI()
     {
-        DarkModeSwitch.IsToggled = _settingsService.DarkMode;
-        VadSwitch.IsToggled = _enableVoiceActivityDetection;
-        AutoTranscribeSwitch.IsToggled = _settingsService.AutoTranscribeOnImport;
-        OpenAfterExportSwitch.IsToggled = _settingsService.OpenFilesAfterExport;
-        DictationFormattingSwitch.IsToggled = _settingsService.EnableDictationFormatting;
+        DarkModeToggle.IsToggled = _settingsService.DarkMode;
+        VadToggle.IsToggled = _enableVoiceActivityDetection;
+        AutoTranscribeToggle.IsToggled = _settingsService.AutoTranscribeOnImport;
+        OpenAfterExportToggle.IsToggled = _settingsService.OpenFilesAfterExport;
+        DictationFormattingToggle.IsToggled = _settingsService.EnableDictationFormatting;
         VolumeSlider.Value = _settingsService.PlaybackVolume;
         HistoryVolumeSlider.Value = _settingsService.PlaybackVolume;
 

@@ -12,9 +12,12 @@
 	<string>1</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>2</integer>
+		<integer>6</integer>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
@@ -28,5 +31,7 @@
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>LynxTranscribe needs microphone access to record audio for transcription.</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 </dict>
 </plist>

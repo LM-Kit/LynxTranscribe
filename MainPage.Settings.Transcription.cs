@@ -165,7 +165,7 @@ public partial class MainPage
         _settingsService.EnableVoiceActivityDetection = _enableVoiceActivityDetection;
 
         // Sync with settings panel switch
-        VadSwitch.IsToggled = _enableVoiceActivityDetection;
+        VadToggle.IsToggled = _enableVoiceActivityDetection;
 
         // Update all VAD UI elements
         UpdateVadToggleUI();

@@ -5,7 +5,7 @@ namespace LynxTranscribe;
 /// </summary>
 public static class AppConstants
 {
-    public const string Version = "2026.1.5";
+    public const string Version = "2026.1.6";
     public const string AppName = "LynxTranscribe";
     public static string VersionString => $"{AppName} v{Version}";
 

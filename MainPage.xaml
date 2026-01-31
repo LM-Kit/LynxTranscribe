@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:l="clr-namespace:LynxTranscribe.Localization"
+             xmlns:controls="clr-namespace:LynxTranscribe.Controls"
              x:Class="LynxTranscribe.MainPage"
              BackgroundColor="{DynamicResource BackgroundPrimary}"
              Shell.NavBarIsVisible="False">
@@ -70,7 +71,7 @@
                 </HorizontalStackLayout>
 
                 <!-- Spacer -->
-                <BoxView Grid.Column="1" Color="Transparent" />
+                <ContentView Grid.Column="1" BackgroundColor="Transparent" InputTransparent="True" />
 
                 <!-- Cancel Transcription Button (shown during transcription) -->
                 <Border x:Name="HeaderCancelButton"
@@ -455,7 +456,7 @@
                                             <Label x:Name="TotalTimeLabel" Text="0:00" FontSize="10" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
                                         </HorizontalStackLayout>
                                         
-                                        <BoxView Grid.Column="1" Color="Transparent" />
+                                        <ContentView Grid.Column="1" BackgroundColor="Transparent" InputTransparent="True" />
                                         
                                         <Label Grid.Column="2" Text="🔊" FontSize="10" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" Margin="0,0,4,0" />
                                         <Slider x:Name="VolumeSlider"
@@ -1935,7 +1936,7 @@
                                         <Label x:Name="DarkModeLabel" Text="Dark Mode" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                         <Label x:Name="DarkModeDescription" Text="Switch between light and dark theme" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
                                     </VerticalStackLayout>
-                                    <Switch x:Name="DarkModeSwitch" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" ThumbColor="{DynamicResource TextPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnDarkModeToggled" />
+                                    <controls:CustomToggle x:Name="DarkModeToggle" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnDarkModeToggled" />
                                 </Grid>
 
                                 <!-- TRANSCRIPTION SETTINGS SECTION -->
@@ -1950,7 +1951,7 @@
                                         <Label x:Name="VadSettingLabel" Text="Voice Activity Detection" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                         <Label x:Name="VadSettingDescription" Text="Filter out silence and non-speech audio" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
                                     </VerticalStackLayout>
-                                    <Switch x:Name="VadSwitch" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" ThumbColor="{DynamicResource TextPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnVadToggled" />
+                                    <controls:CustomToggle x:Name="VadToggle" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnVadToggled" />
                                 </Grid>
 
                                 <!-- Transcription Language -->
@@ -2042,7 +2043,7 @@
                                         <Label x:Name="AutoTranscribeLabel" Text="Auto-transcribe on import" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                         <Label x:Name="AutoTranscribeDescription" Text="Automatically begin transcription when audio is loaded" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
                                     </VerticalStackLayout>
-                                    <Switch x:Name="AutoTranscribeSwitch" Grid.Column="1" IsToggled="False" OnColor="{DynamicResource AccentPrimary}" ThumbColor="{DynamicResource TextPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnAutoTranscribeToggled" />
+                                    <controls:CustomToggle x:Name="AutoTranscribeToggle" Grid.Column="1" IsToggled="False" OnColor="{DynamicResource AccentPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnAutoTranscribeToggled" />
                                 </Grid>
 
                                 <!-- Open Files After Export -->
@@ -2051,7 +2052,7 @@
                                         <Label x:Name="OpenAfterExportLabel" Text="Open files after export" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                         <Label x:Name="OpenAfterExportDescription" Text="Automatically open exported files" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
                                     </VerticalStackLayout>
-                                    <Switch x:Name="OpenAfterExportSwitch" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" ThumbColor="{DynamicResource TextPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnOpenAfterExportToggled" />
+                                    <controls:CustomToggle x:Name="OpenAfterExportToggle" Grid.Column="1" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnOpenAfterExportToggled" />
                                 </Grid>
 
                                 <!-- Dictation Formatting -->
@@ -2067,14 +2068,22 @@
                                             <PointerGestureRecognizer PointerEntered="OnDictationHelpHoverEnter" PointerExited="OnDictationHelpHoverExit" />
                                         </Border.GestureRecognizers>
                                     </Border>
-                                    <Switch x:Name="DictationFormattingSwitch" Grid.Column="2" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" ThumbColor="{DynamicResource TextPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnDictationFormattingToggled" />
+                                    <controls:CustomToggle x:Name="DictationFormattingToggle" Grid.Column="2" IsToggled="True" OnColor="{DynamicResource AccentPrimary}" VerticalOptions="Center" HorizontalOptions="End" Toggled="OnDictationFormattingToggled" />
                                 </Grid>
 
                                 <!-- Audio Input Device -->
                                 <VerticalStackLayout Spacing="4">
                                     <Label x:Name="AudioInputLabel" Text="Audio Input" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                     <Label x:Name="AudioInputDescription" Text="Microphone for recording" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
-                                    <Picker x:Name="InputDevicePicker" Title="Select input device" FontSize="11" TextColor="{DynamicResource TextPrimary}" TitleColor="{DynamicResource TextMuted}" BackgroundColor="{DynamicResource BackgroundTertiary}" Margin="0,4,0,0" SelectedIndexChanged="OnInputDeviceChanged" />
+                                    <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 6" Stroke="{DynamicResource BorderPrimary}" Padding="12,8" Margin="0,4,0,0">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="InputDeviceLabel" Text="Select input device" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Label Grid.Column="1" Text="▼" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                        </Grid>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnInputDeviceDropdownTapped" />
+                                        </Border.GestureRecognizers>
+                                    </Border>
                                 </VerticalStackLayout>
 
                                 <!-- PERFORMANCE SECTION -->

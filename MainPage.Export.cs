@@ -139,7 +139,7 @@ public partial class MainPage
         _settingsService.OpenFilesAfterExport = newValue;
         UpdateExportAutoOpenUI(newValue);
         // Also sync the settings panel switch
-        OpenAfterExportSwitch.IsToggled = newValue;
+        OpenAfterExportToggle.IsToggled = newValue;
     }
 
     private void OnExportAutoOpenHoverEnter(object? sender, PointerEventArgs e)
@@ -172,7 +172,7 @@ public partial class MainPage
         _settingsService.EnableDictationFormatting = newValue;
         UpdateExportDictationUI(newValue);
         // Also sync the settings panel switch
-        DictationFormattingSwitch.IsToggled = newValue;
+        DictationFormattingToggle.IsToggled = newValue;
 
         // Update toggle indicator styling
         UpdateDictationIndicator();

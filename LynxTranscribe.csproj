@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<!-- Windows first when on Windows, macOS first when on Mac -->
@@ -46,8 +46,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#1C1508" BaseSize="512,512" />
+		<!-- App Icon - Use PNG for Mac Catalyst for better compatibility -->
+		<MauiIcon Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'" Include="Resources\AppIcon\appicon_mac.png" Color="#1C1508" BaseSize="512,512" />
+		<MauiIcon Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'maccatalyst'" Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#1C1508" BaseSize="512,512" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1C1508" BaseSize="128,128" />
@@ -87,9 +88,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.0" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="3.4.1" />
-		<PackageReference Include="LM-Kit.NET" Version="2026.1.4" />
+		<PackageReference Include="LM-Kit.NET" Version="2026.1.5" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
@@ -97,8 +98,19 @@
 
 	<!-- Windows-only packages -->
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
-		<PackageReference Include="LM-Kit.NET.Backend.Cuda13.Windows" Version="2026.1.4" />
+		<PackageReference Include="LM-Kit.NET.Backend.Cuda13.Windows" Version="2026.1.5" />
 	</ItemGroup>
+
+	<!-- Mac Catalyst asset catalog for dock icon -->
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\Contents.json" />
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\Contents.json" />
+		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\*.png" />
+		<BundleResource Include="Resources\Images\dockicon.png" />
+		<BundleResource Include="Resources\Images\lynxtranscribe_logo.png" />
+		<BundleResource Include="Resources\Images\png\lynx_icon.png" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PRIResource Remove="design\**" />
 	</ItemGroup>
