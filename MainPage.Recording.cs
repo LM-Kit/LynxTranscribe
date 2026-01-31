@@ -16,7 +16,13 @@ public partial class MainPage
     {
         try
         {
+#if WINDOWS
             var devices = AudioRecorderService.GetInputDevices();
+#elif MACCATALYST
+            var devices = MacAudioRecorderService.GetInputDevices();
+#else
+            var devices = new List<AudioInputDevice>();
+#endif
             InputDevicePicker.Items.Clear();
 
             foreach (var device in devices)

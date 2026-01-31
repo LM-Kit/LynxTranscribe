@@ -1,81 +1,41 @@
 using LMKit.Media.Audio;
 using LMKit.Model;
 using LMKit.Speech;
+#if WINDOWS
 using NAudio.Wave;
+#endif
 
 namespace LynxTranscribe.Services;
 
-/// <summary>
-/// Centralized service for all LM-Kit speech-to-text operations.
-/// Manages audio loading, model loading, and transcription.
-/// </summary>
 public class LMKitService : IDisposable
 {
-    // Model identifiers
     public const string ModelIdAccurate = "whisper-large3";
     public const string ModelIdTurbo = "whisper-large-turbo3";
 
-    // Formats that require MediaFoundationReader (video containers and AAC-based formats)
     private static readonly HashSet<string> MediaFoundationFormats = new(StringComparer.OrdinalIgnoreCase)
     {
         ".mp4", ".m4a", ".aac", ".avi", ".mov", ".wma"
     };
 
-    // Core LM-Kit objects
     private WaveFile? _loadedAudio;
     private SpeechToText? _speechToText;
     private LM? _model;
     private string? _lastLoadedModelId;
 
-    // State
     private bool _isModelLoading;
     private bool _modelDownloadCancelRequest;
     private bool _disposed;
 
-    /// <summary>
-    /// Gets the currently loaded audio file.
-    /// </summary>
     public WaveFile? LoadedAudio => _loadedAudio;
-
-    /// <summary>
-    /// Gets whether a model is currently being loaded.
-    /// </summary>
     public bool IsModelLoading => _isModelLoading;
-
-    /// <summary>
-    /// Gets whether a model download cancellation has been requested.
-    /// </summary>
     public bool ModelDownloadCancelRequest => _modelDownloadCancelRequest;
-
-    /// <summary>
-    /// Gets whether audio is currently loaded and ready for transcription.
-    /// </summary>
     public bool HasLoadedAudio => _loadedAudio != null;
-
-    /// <summary>
-    /// Gets whether a model is loaded and ready for transcription.
-    /// </summary>
     public bool HasLoadedModel => _model != null;
-
-    /// <summary>
-    /// Gets the ID of the currently loaded model, or null if no model is loaded.
-    /// </summary>
     public string? CurrentModelId => _lastLoadedModelId;
-
-    /// <summary>
-    /// Gets the currently loaded model.
-    /// </summary>
     public LM? Model => _model;
 
     #region Audio Loading
 
-    /// <summary>
-    /// Loads an audio file for transcription.
-    /// Automatically converts non-WAV files to WAV format.
-    /// Supports MP4, M4A, AAC, AVI, MOV via Windows Media Foundation.
-    /// </summary>
-    /// <param name="filePath">Path to the audio file</param>
-    /// <returns>Task that completes when audio is loaded</returns>
     public async Task LoadAudioAsync(string filePath)
     {
         DisposeAudio();
@@ -92,17 +52,7 @@ public class LMKitService : IDisposable
 
             try
             {
-                string extension = Path.GetExtension(filePath);
-
-                if (MediaFoundationFormats.Contains(extension))
-                {
-                    ConvertWithMediaFoundation(filePath, tempFilePath);
-                }
-                else
-                {
-                    ConvertWithNAudio(filePath, tempFilePath);
-                }
-
+                ConvertToWav(filePath, tempFilePath);
                 _loadedAudio = new WaveFile(File.ReadAllBytes(tempFilePath));
             }
             finally
@@ -115,21 +65,54 @@ public class LMKitService : IDisposable
         });
     }
 
-    private static void ConvertWithMediaFoundation(string inputPath, string outputPath)
+#if WINDOWS
+    private static void ConvertToWav(string inputPath, string outputPath)
     {
-        using var reader = new MediaFoundationReader(inputPath);
-        WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
-    }
+        string extension = Path.GetExtension(inputPath);
 
-    private static void ConvertWithNAudio(string inputPath, string outputPath)
+        if (MediaFoundationFormats.Contains(extension))
+        {
+            using var reader = new MediaFoundationReader(inputPath);
+            WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
+        }
+        else
+        {
+            using var reader = new AudioFileReader(inputPath);
+            WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
+        }
+    }
+#elif MACCATALYST || IOS
+    private static void ConvertToWav(string inputPath, string outputPath)
     {
-        using var reader = new AudioFileReader(inputPath);
-        WaveFileWriter.CreateWaveFile16(outputPath, reader.ToSampleProvider());
-    }
+        var process = new System.Diagnostics.Process
+        {
+            StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "/usr/bin/afconvert",
+                Arguments = $"-f WAVE -d LEI16@16000 -c 1 \"{inputPath}\" \"{outputPath}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
 
-    /// <summary>
-    /// Disposes the currently loaded audio.
-    /// </summary>
+        process.Start();
+        process.WaitForExit(60000);
+
+        if (process.ExitCode != 0)
+        {
+            var error = process.StandardError.ReadToEnd();
+            throw new Exception($"Audio conversion failed: {error}");
+        }
+
+        if (!File.Exists(outputPath))
+        {
+            throw new Exception("Audio conversion failed: output file not created");
+        }
+    }
+#endif
+
     public void DisposeAudio()
     {
         _loadedAudio?.Dispose();

@@ -1,3 +1,4 @@
+#if WINDOWS
 using LynxTranscribe.Helpers;
 using NAudio.Wave;
 
@@ -344,3 +345,4 @@ public class AudioPlayerService : IDisposable
         }
     }
 }
+#endif

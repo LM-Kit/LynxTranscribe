@@ -36,9 +36,15 @@ public partial class MainPage : ContentPage
     private readonly LMKitService _lmKitService = new();
     private readonly TranscriptionHistoryService _historyService = new();
     private readonly AppSettingsService _settingsService = new();
+#if WINDOWS
     private readonly AudioPlayerService _audioPlayer = new();        // Left panel (Audio tab)
     private readonly AudioPlayerService _historyAudioPlayer = new(); // Right panel (History playback)
     private readonly AudioRecorderService _audioRecorder = new();
+#elif MACCATALYST
+    private readonly MacAudioPlayerService _audioPlayer = new();
+    private readonly MacAudioPlayerService _historyAudioPlayer = new();
+    private readonly MacAudioRecorderService _audioRecorder = new();
+#endif
 
     // UI State
     private string? _currentRecordId = null;
@@ -513,9 +519,7 @@ public partial class MainPage : ContentPage
 
     private void PreWarmAudioSubsystem()
     {
-        // Warm up NAudio's WaveOutEvent to ensure the audio subsystem is ready
-        // when the user first loads a history item. Do this synchronously to
-        // ensure it completes before user interaction.
+#if WINDOWS
         try
         {
             using var warmup = new NAudio.Wave.WaveOutEvent();
@@ -524,8 +528,8 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Audio warmup warning: {ex.Message}");
-            // Continue anyway - the app can still function
         }
+#endif
     }
 
     private void InitializeAudioRecorder()
@@ -590,7 +594,13 @@ public partial class MainPage : ContentPage
     {
         try
         {
+#if WINDOWS
             var devices = AudioRecorderService.GetInputDevices();
+#elif MACCATALYST
+            var devices = MacAudioRecorderService.GetInputDevices();
+#else
+            var devices = new List<AudioInputDevice>();
+#endif
             if (devices.Count > 0 && _selectedInputDeviceId < devices.Count)
             {
                 var deviceName = devices[_selectedInputDeviceId].Name;
