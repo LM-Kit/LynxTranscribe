@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 #if MACCATALYST
 using Microsoft.Maui.Platform;
 using UIKit;
+using CoreGraphics;
 #endif
 
 namespace LynxTranscribe
@@ -35,13 +36,6 @@ namespace LynxTranscribe
 #if MACCATALYST
         private static void ConfigureMacHandlers(MauiAppBuilder builder)
         {
-            builder.ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddHandler<Entry, Microsoft.Maui.Handlers.EntryHandler>();
-                handlers.AddHandler<Editor, Microsoft.Maui.Handlers.EditorHandler>();
-                handlers.AddHandler<SearchBar, Microsoft.Maui.Handlers.SearchBarHandler>();
-            });
-
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("MacCatalystEntry", (handler, view) =>
             {
                 if (handler.PlatformView is UITextField textField)
@@ -66,6 +60,31 @@ namespace LynxTranscribe
                     searchBar.BackgroundColor = UIColor.Clear;
                     searchBar.BarTintColor = UIColor.Clear;
                     searchBar.SearchBarStyle = UISearchBarStyle.Minimal;
+                }
+            });
+
+            Microsoft.Maui.Handlers.SliderHandler.Mapper.AppendToMapping("MacCatalystSlider", (handler, view) =>
+            {
+                if (handler.PlatformView is UISlider slider)
+                {
+                    slider.Transform = CGAffineTransform.MakeScale(0.8f, 0.8f);
+                    
+                    var accentColor = UIColor.FromRGB(245, 158, 11);
+                    var trackColor = UIColor.FromRGB(63, 63, 70);
+                    
+                    slider.MinimumTrackTintColor = accentColor;
+                    slider.MaximumTrackTintColor = trackColor;
+                    slider.ThumbTintColor = UIColor.White;
+                }
+            });
+
+            Microsoft.Maui.Handlers.SwitchHandler.Mapper.AppendToMapping("MacCatalystSwitch", (handler, view) =>
+            {
+                if (handler.PlatformView is UISwitch uiSwitch)
+                {
+                    uiSwitch.Transform = CGAffineTransform.MakeScale(0.7f, 0.7f);
+                    uiSwitch.OnTintColor = UIColor.FromRGB(245, 158, 11);
+                    uiSwitch.ThumbTintColor = UIColor.White;
                 }
             });
         }

@@ -106,6 +106,9 @@
 		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\Contents.json" />
 		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\Contents.json" />
 		<ImageAsset Include="Platforms\MacCatalyst\Assets.xcassets\AppIcon.appiconset\*.png" />
+		<BundleResource Include="Resources\Images\dockicon.png" />
+		<BundleResource Include="Resources\Images\lynxtranscribe_logo.png" />
+		<BundleResource Include="Resources\Images\png\lynx_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>

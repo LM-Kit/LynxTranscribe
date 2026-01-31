@@ -40,6 +40,8 @@ public class AppDelegate : MauiUIApplicationDelegate
                 ConfigureWindowScene(windowScene);
             }
         }
+
+        SetDockIcon();
     }
 
     private void ConfigureWindowScene(UIWindowScene windowScene)
@@ -80,6 +82,79 @@ public class AppDelegate : MauiUIApplicationDelegate
         }
     }
 
+    private void SetDockIcon()
+    {
+        try
+        {
+            var nsAppClass = new Class("NSApplication");
+            var sharedAppSel = new Selector("sharedApplication");
+            var nsApp = Messaging.IntPtr_objc_msgSend(nsAppClass.Handle, sharedAppSel.Handle);
+            
+            if (nsApp == IntPtr.Zero) return;
+
+            UIImage? uiImage = null;
+            
+            string[] iconNames = { "dockicon", "lynxtranscribe_logo", "appicon_mac", "lynx_icon" };
+            foreach (var name in iconNames)
+            {
+                uiImage = UIImage.FromBundle(name);
+                if (uiImage != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Found icon: {name} from bundle");
+                    break;
+                }
+                
+                uiImage = UIImage.FromBundle($"{name}.png");
+                if (uiImage != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Found icon: {name}.png from bundle");
+                    break;
+                }
+            }
+            
+            if (uiImage == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Could not load any icon image from bundle");
+                return;
+            }
+
+            var nsImageClass = new Class("NSImage");
+            var allocSel = new Selector("alloc");
+            var initWithCGImageSel = new Selector("initWithCGImage:size:");
+            
+            var nsImageAlloc = Messaging.IntPtr_objc_msgSend(nsImageClass.Handle, allocSel.Handle);
+            
+            var cgImage = uiImage.CGImage;
+            if (cgImage == null) 
+            {
+                System.Diagnostics.Debug.WriteLine("CGImage is null");
+                return;
+            }
+
+            var size = new CoreGraphics.CGSize(512, 512);
+            var nsImage = Messaging.IntPtr_objc_msgSend_IntPtr_CGSize(
+                nsImageAlloc, 
+                initWithCGImageSel.Handle, 
+                cgImage.Handle, 
+                size);
+
+            if (nsImage != IntPtr.Zero)
+            {
+                var setAppIconSel = new Selector("setApplicationIconImage:");
+                Messaging.void_objc_msgSend_IntPtr(nsApp, setAppIconSel.Handle, nsImage);
+                System.Diagnostics.Debug.WriteLine("Dock icon set successfully");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to create NSImage");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"SetDockIcon error: {ex.Message}");
+        }
+    }
+
     private void ConfigureNSWindow()
     {
         try
@@ -101,24 +176,19 @@ public class AppDelegate : MauiUIApplicationDelegate
 
             var handle = nsWindow.Handle;
 
-            // Make titlebar fully transparent
             var setTitlebarAppearsTransparent = new Selector("setTitlebarAppearsTransparent:");
             Messaging.void_objc_msgSend_bool(handle, setTitlebarAppearsTransparent.Handle, true);
 
-            // Hide window title (NSWindowTitleHidden = 1)
             var setTitleVisibility = new Selector("setTitleVisibility:");
             Messaging.void_objc_msgSend_nint(handle, setTitleVisibility.Handle, 1);
 
-            // Add full size content view style
             var styleMaskSel = new Selector("styleMask");
             var currentMask = (nuint)Messaging.nuint_objc_msgSend(handle, styleMaskSel.Handle);
             
-            // NSWindowStyleMaskFullSizeContentView = 1 << 15 = 32768
             var newMask = currentMask | 32768;
             var setStyleMaskSel = new Selector("setStyleMask:");
             Messaging.void_objc_msgSend_nuint(handle, setStyleMaskSel.Handle, newMask);
 
-            // Set window background color
             var nsColorClass = new Class("NSColor");
             var colorSel = new Selector("colorWithRed:green:blue:alpha:");
             var darkColor = Messaging.IntPtr_objc_msgSend_nfloat_nfloat_nfloat_nfloat(
@@ -162,5 +232,9 @@ internal static class Messaging
     [System.Runtime.InteropServices.DllImport(LIBOBJC, EntryPoint = "objc_msgSend")]
     public static extern IntPtr IntPtr_objc_msgSend_nfloat_nfloat_nfloat_nfloat(
         IntPtr receiver, IntPtr selector, double arg1, double arg2, double arg3, double arg4);
+
+    [System.Runtime.InteropServices.DllImport(LIBOBJC, EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_CGSize(
+        IntPtr receiver, IntPtr selector, IntPtr arg1, CoreGraphics.CGSize arg2);
 }
 #endif
