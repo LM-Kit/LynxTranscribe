@@ -12,6 +12,145 @@ LynxTranscribe is a **cross-platform desktop application** for offline audio tra
 - Uses **LM-Kit.NET** for on-device Whisper model inference
 - 100% offline - no external API calls for transcription
 
+---
+
+## CRITICAL REQUIREMENTS
+
+### Localization (MANDATORY)
+
+**All user-facing text MUST be localized.** Never hardcode strings in XAML or C# code.
+
+**Required steps for ANY new text:**
+1. Add the English string to `Resources/Strings/AppStrings.resx`
+2. Add the French translation to `Resources/Strings/AppStrings.fr.resx`
+3. Add a constant key to `Localization/StringKeys.cs`
+4. Reference the string properly (see below)
+
+**In XAML:**
+```xml
+<!-- CORRECT - uses localization system -->
+<Label Text="{Translate Key=YourNewKey}" />
+
+<!-- WRONG - hardcoded text -->
+<Label Text="Some text" />
+```
+
+**In C# code:**
+```csharp
+// CORRECT - uses localization system
+var text = LocalizationService.Instance[StringKeys.YourNewKey];
+
+// WRONG - hardcoded text
+var text = "Some text";
+```
+
+**Key files:**
+- `Resources/Strings/AppStrings.resx` - English strings (primary)
+- `Resources/Strings/AppStrings.fr.resx` - French translations
+- `Localization/StringKeys.cs` - Type-safe string key constants
+- `Localization/LocalizationService.cs` - Singleton for accessing strings
+- `Localization/TranslateExtension.cs` - XAML markup extension
+
+---
+
+### Theme Compatibility (MANDATORY)
+
+**All UI elements MUST be theme-aware** and correctly update when the user switches between dark and light modes.
+
+#### For Colors in XAML - Use DynamicResource
+
+```xml
+<!-- CORRECT - responds to theme changes -->
+<Label TextColor="{DynamicResource TextPrimary}" />
+<Border BackgroundColor="{DynamicResource BackgroundTertiary}" />
+
+<!-- WRONG - static color won't update on theme switch -->
+<Label TextColor="{StaticResource TextPrimary}" />
+<Label TextColor="#FFFFFF" />
+```
+
+#### For Interactive Controls (Buttons, Tabs, etc.)
+
+Controls with hover states or dynamic styling MUST be registered with the theme system:
+
+```csharp
+// In MainPage.Theme.cs InitializeThemedControls() or your initialization code:
+RegisterThemedControl(YourButton, () => ControlStyle.ButtonDefault, YourButtonLabel);
+
+// For state-dependent styling:
+RegisterThemedControl(YourToggle, () => _isActive ? ControlStyle.ModeSelected : ControlStyle.ButtonDefault, YourToggleLabel);
+```
+
+#### For Programmatic Color Changes
+
+**Never hardcode colors.** Always read from current resources:
+
+```csharp
+// CORRECT - reads current theme color
+var color = (Color)this.Resources["TextPrimary"]!;
+
+// CORRECT - use ApplyStyle for standard control styling
+ApplyStyle(myBorder, ControlStyle.ButtonDefault, myLabel);
+
+// WRONG - hardcoded color ignores theme
+var color = Colors.White;
+myBorder.BackgroundColor = Color.FromArgb("#1F1F23");
+```
+
+#### Available ControlStyle Options
+
+| Style | Use Case |
+|-------|----------|
+| `ButtonDefault` | Standard buttons (tertiary background) |
+| `ButtonHover` | Button hover state |
+| `ButtonAccent` | Primary action buttons (orange) |
+| `ButtonAccentHover` | Primary button hover |
+| `ButtonDanger` | Destructive actions (red) |
+| `ButtonDangerHover` | Danger button hover |
+| `ButtonTransparent` | Icon-only or minimal buttons |
+| `ButtonTransparentHover` | Transparent button hover |
+| `TabActive` / `TabInactive` / `TabHover` | Tab button states |
+| `ModeSelected` / `ModeUnselected` / `ModeHover` | Toggle/mode button states |
+| `PlayButton` / `PlayButtonHover` | Playback control buttons |
+
+#### Theme Color Resources (defined in `Resources/Styles/Colors.xaml`)
+
+| Resource Key | Purpose |
+|--------------|---------|
+| `BackgroundPrimary` | Main window background |
+| `BackgroundSecondary` | Panel backgrounds |
+| `BackgroundTertiary` | Button/card backgrounds |
+| `TextPrimary` | Main text color |
+| `TextSecondary` | Muted/secondary text |
+| `AccentPrimary` | Orange accent (#F59E0B) |
+| `AccentMuted` | Darker accent for hover |
+| `AccentSurface` | Light accent background |
+| `AccentText` | Text on accent surfaces |
+| `SurfaceBorder` | Border color for cards/buttons |
+| `DangerColor` | Red for errors/destructive |
+| `SuccessColor` | Green for success states |
+
+#### Subscribing to Theme Changes
+
+For custom refresh logic that doesn't fit the control registration system:
+
+```csharp
+// Register a callback for theme changes
+RegisterThemeRefresh(() =>
+{
+    // Your custom refresh logic here
+    UpdateMyCustomColors();
+});
+
+// Or subscribe to the event
+ThemeChanged += () =>
+{
+    // Handle theme change
+};
+```
+
+---
+
 ## Technology Stack
 
 | Component | Technology |
@@ -107,7 +246,7 @@ The MainPage is split into **12 partial class files** by concern. This is a key 
 | `MainPage.Settings.Transcription.cs` | VAD, dictation, language settings |
 | `MainPage.Settings.Storage.cs` | Folder paths configuration |
 | `MainPage.Settings.UI.cs` | Font size, UI preferences |
-| `MainPage.Theme.cs` | Theme application logic |
+| `MainPage.Theme.cs` | Theme application logic, control registration |
 | `MainPage.KeyboardShortcuts.cs` | Keyboard event handling |
 
 **When modifying UI behavior**, identify the correct partial class file based on the feature area.
@@ -189,19 +328,27 @@ Audio services are instantiated conditionally in `MainPage.xaml.cs`:
 - Use `CancellationToken` for long-running operations
 - UI updates via `MainThread.BeginInvokeOnMainThread()`
 
-### XAML
-- Use `{Translate Key=StringKey}` for localized text
-- Theme colors defined in `Resources/Styles/Colors.xaml`
-- Styles defined in `Resources/Styles/Styles.xaml`
-
-### Localization
-- Add new strings to `Resources/Strings/AppStrings.resx` (English)
-- Add French translations to `Resources/Strings/AppStrings.fr.resx`
-- Add string key constant to `Localization/StringKeys.cs`
-
 ## Common Tasks
 
+### Adding a New UI Button
+
+1. Add XAML in `MainPage.xaml` with localized text:
+   ```xml
+   <Border x:Name="MyNewButton" ...>
+       <Label x:Name="MyNewButtonLabel" Text="{Translate Key=MyNewButtonText}" />
+   </Border>
+   ```
+2. Add string to `AppStrings.resx` and `AppStrings.fr.resx`
+3. Add key to `StringKeys.cs`: `public const string MyNewButtonText = "MyNewButtonText";`
+4. Register for theming in `MainPage.Theme.cs`:
+   ```csharp
+   RegisterThemedControl(MyNewButton, () => ControlStyle.ButtonDefault, MyNewButtonLabel);
+   ```
+5. Add hover handlers if needed (use `ApplyStyle` method)
+6. Add click handler in appropriate partial class
+
 ### Adding a New Setting
+
 1. Add property to `AppSettingsService.cs` with getter/setter that calls `SaveSettings()`
 2. Add default value constant
 3. Update `SaveSettings()` to include the new property
@@ -209,21 +356,17 @@ Audio services are instantiated conditionally in `MainPage.xaml.cs`:
 5. Bind in XAML or wire up in code
 
 ### Adding a New Export Format
+
 1. Add export method to `Helpers/TranscriptExporter.cs`
-2. Add UI button in `MainPage.xaml` (export section)
+2. Add UI button in `MainPage.xaml` (export section) with localized text
 3. Add handler in `MainPage.Export.cs`
+4. Register button for theming
 
 ### Adding Keyboard Shortcut
+
 1. Edit `MainPage.KeyboardShortcuts.cs`
 2. Handle in `OnKeyDown` or `OnKeyUp` method
 3. Document in README.md keyboard shortcuts table
-
-### Adding New Localized String
-1. Add to `Resources/Strings/AppStrings.resx`
-2. Add French translation to `AppStrings.fr.resx`
-3. Add key constant to `Localization/StringKeys.cs`
-4. Use in XAML: `{Translate Key=YourNewKey}`
-5. Use in code: `LocalizationService.Instance[StringKeys.YourNewKey]`
 
 ## Testing
 
@@ -231,15 +374,17 @@ No automated test suite exists. Testing is manual:
 - Test on both Windows and macOS when possible
 - Test with various audio formats (WAV, MP3, MP4, etc.)
 - Test both Turbo and Accurate transcription modes
-- Test light and dark themes
+- **Test both light and dark themes** - verify all new UI elements update correctly
+- **Test both English and French** - verify all new text is properly localized
 
 ## Key Files to Understand First
 
 1. `MainPage.xaml` - Main UI structure (large file, browse sections)
 2. `MainPage.xaml.cs` - Core state and initialization
-3. `Services/LMKitService.cs` - AI transcription logic
-4. `AppConstants.cs` - Application constants
-5. `MauiProgram.cs` - App configuration and DI
+3. `MainPage.Theme.cs` - Theme system and control registration
+4. `Services/LMKitService.cs` - AI transcription logic
+5. `AppConstants.cs` - Application constants
+6. `Localization/StringKeys.cs` - All localization keys
 
 ## Debugging Tips
 
@@ -247,6 +392,8 @@ No automated test suite exists. Testing is manual:
 - Audio issues: Check platform-specific service (`AudioPlayerService` vs `MacAudioPlayerService`)
 - UI issues: Check `MainPage.UI.cs` or platform handlers in `MauiProgram.cs`
 - Settings not saving: Check `AppSettingsService.cs` property implementation
+- Theme not updating: Ensure control is registered via `RegisterThemedControl` and uses `DynamicResource`
+- Missing translation: Check `StringKeys.cs` key matches `.resx` file key exactly
 
 ## Performance Considerations
 
