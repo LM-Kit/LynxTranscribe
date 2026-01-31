@@ -502,10 +502,15 @@ public partial class MainPage
             });
             e.Handled = true;
         }
-        // Escape - Close settings/search/dropdown
+        // Escape - Close settings/search/dropdown/shortcuts
         else if (e.Key == Windows.System.VirtualKey.Escape)
         {
-            if (LanguageDropdownMenu.IsVisible)
+            if (KeyboardShortcutsOverlay.IsVisible)
+            {
+                MainThread.BeginInvokeOnMainThread(() => HideKeyboardShortcutsPanel());
+                e.Handled = true;
+            }
+            else if (LanguageDropdownMenu.IsVisible)
             {
                 MainThread.BeginInvokeOnMainThread(() => LanguageDropdownMenu.IsVisible = false);
                 e.Handled = true;
@@ -533,6 +538,12 @@ public partial class MainPage
                 MainThread.BeginInvokeOnMainThread(() => NavigateToNextMatch());
             }
 
+            e.Handled = true;
+        }
+        // F1 - Toggle keyboard shortcuts panel
+        else if (e.Key == Windows.System.VirtualKey.F1)
+        {
+            MainThread.BeginInvokeOnMainThread(() => ToggleKeyboardShortcutsPanel());
             e.Handled = true;
         }
     }

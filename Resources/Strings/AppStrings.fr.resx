@@ -681,4 +681,54 @@
   <data name="ExtractingAudio" xml:space="preserve">
     <value>Extraction audio et génération de la forme d'onde...</value>
   </data>
+
+  <!-- Keyboard shortcuts -->
+  <data name="KeyboardShortcuts" xml:space="preserve">
+    <value>Raccourcis clavier</value>
+  </data>
+  <data name="KeyboardShortcutsDescription" xml:space="preserve">
+    <value>Référence rapide des raccourcis clavier disponibles</value>
+  </data>
+  <data name="ShortcutCategoryGeneral" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="ShortcutCategoryPlayback" xml:space="preserve">
+    <value>Lecture</value>
+  </data>
+  <data name="ShortcutCategoryTranscript" xml:space="preserve">
+    <value>Transcription</value>
+  </data>
+  <data name="ShortcutOpenFile" xml:space="preserve">
+    <value>Ouvrir un fichier</value>
+  </data>
+  <data name="ShortcutExport" xml:space="preserve">
+    <value>Exporter la transcription</value>
+  </data>
+  <data name="ShortcutSettings" xml:space="preserve">
+    <value>Ouvrir les paramètres</value>
+  </data>
+  <data name="ShortcutClosePanel" xml:space="preserve">
+    <value>Fermer le panneau / dialogue</value>
+  </data>
+  <data name="ShortcutPlayPause" xml:space="preserve">
+    <value>Lecture / Pause</value>
+  </data>
+  <data name="ShortcutSeekBack" xml:space="preserve">
+    <value>Reculer de 5s</value>
+  </data>
+  <data name="ShortcutSeekForward" xml:space="preserve">
+    <value>Avancer de 5s</value>
+  </data>
+  <data name="ShortcutSearch" xml:space="preserve">
+    <value>Rechercher dans la transcription</value>
+  </data>
+  <data name="ShortcutNextMatch" xml:space="preserve">
+    <value>Résultat suivant</value>
+  </data>
+  <data name="ShortcutPrevMatch" xml:space="preserve">
+    <value>Résultat précédent</value>
+  </data>
+  <data name="ShortcutShowShortcuts" xml:space="preserve">
+    <value>Afficher les raccourcis clavier</value>
+  </data>
 </root>

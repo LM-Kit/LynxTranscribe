@@ -254,4 +254,22 @@ public static class StringKeys
     // File loading
     public const string LoadingFile = "LoadingFile";
     public const string ExtractingAudio = "ExtractingAudio";
+
+    // Keyboard shortcuts
+    public const string KeyboardShortcuts = "KeyboardShortcuts";
+    public const string KeyboardShortcutsDescription = "KeyboardShortcutsDescription";
+    public const string ShortcutCategoryGeneral = "ShortcutCategoryGeneral";
+    public const string ShortcutCategoryPlayback = "ShortcutCategoryPlayback";
+    public const string ShortcutCategoryTranscript = "ShortcutCategoryTranscript";
+    public const string ShortcutOpenFile = "ShortcutOpenFile";
+    public const string ShortcutExport = "ShortcutExport";
+    public const string ShortcutSettings = "ShortcutSettings";
+    public const string ShortcutClosePanel = "ShortcutClosePanel";
+    public const string ShortcutPlayPause = "ShortcutPlayPause";
+    public const string ShortcutSeekBack = "ShortcutSeekBack";
+    public const string ShortcutSeekForward = "ShortcutSeekForward";
+    public const string ShortcutSearch = "ShortcutSearch";
+    public const string ShortcutNextMatch = "ShortcutNextMatch";
+    public const string ShortcutPrevMatch = "ShortcutPrevMatch";
+    public const string ShortcutShowShortcuts = "ShortcutShowShortcuts";
 }

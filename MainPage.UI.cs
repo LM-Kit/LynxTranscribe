@@ -201,6 +201,9 @@ public partial class MainPage
 
         // Theme toggle tooltip
         UpdateThemeToggleUI(_settingsService.DarkMode);
+
+        // Keyboard shortcuts panel
+        RefreshKeyboardShortcutsStrings();
     }
 
     private void OnWindowDestroying(object? sender, EventArgs e)
