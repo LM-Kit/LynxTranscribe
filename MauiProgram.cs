@@ -74,17 +74,14 @@ namespace LynxTranscribe
                     slider.MaximumTrackTintColor = trackColor;
                     
                     var thumbSize = new CGSize(14, 14);
-                    UIGraphics.BeginImageContextWithOptions(thumbSize, false, 0);
-                    var context = UIGraphics.GetCurrentContext();
-                    if (context != null)
+                    var renderer = new UIGraphicsImageRenderer(thumbSize);
+                    var thumbImage = renderer.CreateImage(ctx =>
                     {
-                        context.SetFillColor(UIColor.White.CGColor);
+                        var context = ctx.CGContext;
                         context.SetShadow(new CGSize(0, 1), 2, UIColor.FromRGBA(0, 0, 0, 80).CGColor);
-                        var rect = new CGRect(1, 1, 12, 12);
-                        context.FillEllipseInRect(rect);
-                    }
-                    var thumbImage = UIGraphics.GetImageFromCurrentImageContext();
-                    UIGraphics.EndImageContext();
+                        context.SetFillColor(UIColor.White.CGColor);
+                        context.FillEllipseInRect(new CGRect(1, 1, 12, 12));
+                    });
                     
                     if (thumbImage != null)
                     {

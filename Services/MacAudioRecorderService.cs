@@ -98,8 +98,10 @@ public class MacAudioRecorderService : IDisposable
 
     public void RequestMicrophonePermission(Action<bool> callback)
     {
+#pragma warning disable CA1422 // Validate platform compatibility
         var session = AVAudioSession.SharedInstance();
         session.RequestRecordPermission(granted => callback(granted));
+#pragma warning restore CA1422
     }
 
     public void StartRecording(int deviceId = -1)
@@ -146,7 +148,7 @@ public class MacAudioRecorderService : IDisposable
                 AVAudioSettings.AVLinearPCMIsFloatKey, NSNumber.FromBoolean(false)
             );
 
-            NSError error;
+            NSError? error;
             _recorder = AVAudioRecorder.Create(url, new AudioSettings(settings), out error);
 
             if (error != null || _recorder == null)

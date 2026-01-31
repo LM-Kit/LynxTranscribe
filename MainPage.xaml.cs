@@ -49,7 +49,9 @@ public partial class MainPage : ContentPage
     // UI State
     private string? _currentRecordId = null;
     private bool _isFileTabActive = true;
+#pragma warning disable CS0414
     private bool _isLoadingHistoryRecord = false;
+#pragma warning restore CS0414
     private bool _isDraggingSlider = false;
     private string? _historyAudioFilePath = null;
     private List<AudioSegment> _currentSegments = new();

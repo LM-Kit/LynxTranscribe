@@ -91,7 +91,7 @@ public partial class MainPage
         }
     }
 
-    private Task<string?> PickFolderAsync(string initialDirectory)
+    private async Task<string?> PickFolderAsync(string initialDirectory)
     {
 #if WINDOWS
         var tcs = new TaskCompletionSource<string?>();
@@ -112,7 +112,7 @@ public partial class MainPage
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
 
-        return tcs.Task;
+        return await tcs.Task;
 #else
         try
         {

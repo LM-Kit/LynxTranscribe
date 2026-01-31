@@ -9,7 +9,7 @@ public class AppDelegate : MauiUIApplicationDelegate
 {
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 
-    public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+    public override bool FinishedLaunching(UIApplication application, NSDictionary? launchOptions)
     {
         var result = base.FinishedLaunching(application, launchOptions);
 
@@ -53,7 +53,13 @@ public class AppDelegate : MauiUIApplicationDelegate
             {
                 titlebar.TitleVisibility = UITitlebarTitleVisibility.Hidden;
                 titlebar.Toolbar = null;
-                titlebar.SeparatorStyle = UITitlebarSeparatorStyle.None;
+                
+                if (OperatingSystem.IsMacCatalystVersionAtLeast(16))
+                {
+#pragma warning disable CA1416
+                    titlebar.SeparatorStyle = UITitlebarSeparatorStyle.None;
+#pragma warning restore CA1416
+                }
             }
 
             if (windowScene.SizeRestrictions != null)
