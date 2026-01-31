@@ -2075,7 +2075,15 @@
                                 <VerticalStackLayout Spacing="4">
                                     <Label x:Name="AudioInputLabel" Text="Audio Input" FontSize="13" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" />
                                     <Label x:Name="AudioInputDescription" Text="Microphone for recording" FontSize="10" TextColor="{DynamicResource TextTertiary}" />
-                                    <Picker x:Name="InputDevicePicker" Title="Select input device" FontSize="11" TextColor="{DynamicResource TextPrimary}" TitleColor="{DynamicResource TextMuted}" BackgroundColor="{DynamicResource BackgroundTertiary}" Margin="0,4,0,0" SelectedIndexChanged="OnInputDeviceChanged" />
+                                    <Border BackgroundColor="{DynamicResource BackgroundTertiary}" StrokeShape="RoundRectangle 6" Stroke="{DynamicResource BorderPrimary}" Padding="12,8" Margin="0,4,0,0">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label x:Name="InputDeviceLabel" Text="Select input device" FontSize="12" TextColor="{DynamicResource TextPrimary}" VerticalOptions="Center" />
+                                            <Label Grid.Column="1" Text="▼" FontSize="10" TextColor="{DynamicResource TextMuted}" VerticalOptions="Center" />
+                                        </Grid>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnInputDeviceDropdownTapped" />
+                                        </Border.GestureRecognizers>
+                                    </Border>
                                 </VerticalStackLayout>
 
                                 <!-- PERFORMANCE SECTION -->

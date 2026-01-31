@@ -12,64 +12,92 @@ public partial class MainPage
 {
     #region Audio Recording
 
+    private List<AudioInputDevice> _inputDevices = new();
+
     private void PopulateInputDevices()
     {
         try
         {
 #if WINDOWS
-            var devices = AudioRecorderService.GetInputDevices();
+            _inputDevices = AudioRecorderService.GetInputDevices();
 #elif MACCATALYST
-            var devices = MacAudioRecorderService.GetInputDevices();
+            _inputDevices = MacAudioRecorderService.GetInputDevices();
 #else
-            var devices = new List<AudioInputDevice>();
+            _inputDevices = new List<AudioInputDevice>();
 #endif
-            InputDevicePicker.Items.Clear();
-
-            foreach (var device in devices)
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                InputDevicePicker.Items.Add(device.Name);
-            }
-
-            _hasInputDevices = devices.Count > 0;
-
-            if (_hasInputDevices)
-            {
-                if (_selectedInputDeviceId < devices.Count)
+                try
                 {
-                    InputDevicePicker.SelectedIndex = _selectedInputDeviceId;
-                }
-                else
-                {
-                    InputDevicePicker.SelectedIndex = 0;
-                }
+                    _hasInputDevices = _inputDevices.Count > 0;
 
-                RecordButton.IsEnabled = true;
-                RecordButton.Opacity = 1.0;
-            }
-            else
-            {
-                RecordButton.IsEnabled = false;
-                RecordButton.Opacity = 0.5;
-                RecordButtonLabel.Text = L.Localize(StringKeys.NoMic);
-            }
+                    if (_hasInputDevices)
+                    {
+                        if (_selectedInputDeviceId >= _inputDevices.Count)
+                        {
+                            _selectedInputDeviceId = 0;
+                        }
+
+                        InputDeviceLabel.Text = _inputDevices[_selectedInputDeviceId].Name;
+                        RecordButton.IsEnabled = true;
+                        RecordButton.Opacity = 1.0;
+                    }
+                    else
+                    {
+                        InputDeviceLabel.Text = "No microphone found";
+                        RecordButton.IsEnabled = false;
+                        RecordButton.Opacity = 0.5;
+                        RecordButtonLabel.Text = L.Localize(StringKeys.NoMic);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error updating input device UI: {ex.Message}");
+                }
+            });
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error populating input devices: {ex.Message}");
             _hasInputDevices = false;
-            RecordButton.IsEnabled = false;
-            RecordButton.Opacity = 0.5;
-            RecordButtonLabel.Text = L.Localize(StringKeys.NoMic);
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                InputDeviceLabel.Text = "No microphone found";
+                RecordButton.IsEnabled = false;
+                RecordButton.Opacity = 0.5;
+                RecordButtonLabel.Text = L.Localize(StringKeys.NoMic);
+            });
         }
     }
 
-    private void OnInputDeviceChanged(object? sender, EventArgs e)
+    private async void OnInputDeviceDropdownTapped(object? sender, TappedEventArgs e)
     {
-        if (InputDevicePicker.SelectedIndex >= 0)
+        try
         {
-            _selectedInputDeviceId = InputDevicePicker.SelectedIndex;
-            _settingsService.InputDeviceId = _selectedInputDeviceId;
-            UpdateAudioInputStatus();
+            if (_inputDevices.Count == 0)
+            {
+                await DisplayAlert("No Devices", "No audio input devices found.", "OK");
+                return;
+            }
+
+            var deviceNames = _inputDevices.Select(d => d.Name).ToArray();
+            var result = await DisplayActionSheet("Select Input Device", "Cancel", null, deviceNames);
+
+            if (result != null && result != "Cancel")
+            {
+                var index = Array.IndexOf(deviceNames, result);
+                if (index >= 0)
+                {
+                    _selectedInputDeviceId = index;
+                    _settingsService.InputDeviceId = _selectedInputDeviceId;
+                    InputDeviceLabel.Text = result;
+                    UpdateAudioInputStatus();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"OnInputDeviceDropdownTapped error: {ex.Message}");
         }
     }
 
@@ -102,8 +130,8 @@ public partial class MainPage
 
         try
         {
-            var deviceName = InputDevicePicker.SelectedIndex >= 0 && InputDevicePicker.SelectedIndex < InputDevicePicker.Items.Count
-                ? InputDevicePicker.Items[InputDevicePicker.SelectedIndex]
+            var deviceName = _selectedInputDeviceId >= 0 && _selectedInputDeviceId < _inputDevices.Count
+                ? _inputDevices[_selectedInputDeviceId].Name
                 : L.Localize(StringKeys.Default);
             RecordingInputLabel.Text = L.Localize(StringKeys.UsingMicrophone, deviceName);
 
