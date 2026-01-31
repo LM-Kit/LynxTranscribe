@@ -681,4 +681,87 @@
   <data name="ExtractingAudio" xml:space="preserve">
     <value>Extraction audio et génération de la forme d'onde...</value>
   </data>
+
+  <!-- Keyboard shortcuts -->
+  <data name="KeyboardShortcuts" xml:space="preserve">
+    <value>Raccourcis clavier</value>
+  </data>
+  <data name="KeyboardShortcutsDescription" xml:space="preserve">
+    <value>Référence rapide des raccourcis clavier disponibles</value>
+  </data>
+  <data name="ShortcutCategoryGeneral" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="ShortcutCategoryPlayback" xml:space="preserve">
+    <value>Lecture</value>
+  </data>
+  <data name="ShortcutCategoryTranscript" xml:space="preserve">
+    <value>Transcription</value>
+  </data>
+  <data name="ShortcutOpenFile" xml:space="preserve">
+    <value>Ouvrir un fichier</value>
+  </data>
+  <data name="ShortcutExport" xml:space="preserve">
+    <value>Exporter la transcription</value>
+  </data>
+  <data name="ShortcutSettings" xml:space="preserve">
+    <value>Ouvrir les paramètres</value>
+  </data>
+  <data name="ShortcutClosePanel" xml:space="preserve">
+    <value>Fermer le panneau / dialogue</value>
+  </data>
+  <data name="ShortcutPlayPause" xml:space="preserve">
+    <value>Lecture / Pause</value>
+  </data>
+  <data name="ShortcutSeekBack" xml:space="preserve">
+    <value>Reculer de 5s</value>
+  </data>
+  <data name="ShortcutSeekForward" xml:space="preserve">
+    <value>Avancer de 5s</value>
+  </data>
+  <data name="ShortcutSearch" xml:space="preserve">
+    <value>Rechercher dans la transcription</value>
+  </data>
+  <data name="ShortcutNextMatch" xml:space="preserve">
+    <value>Résultat suivant</value>
+  </data>
+  <data name="ShortcutPrevMatch" xml:space="preserve">
+    <value>Résultat précédent</value>
+  </data>
+  <data name="ShortcutShowShortcuts" xml:space="preserve">
+    <value>Afficher les raccourcis clavier</value>
+  </data>
+  <data name="ShortcutStartTranscription" xml:space="preserve">
+    <value>Démarrer la transcription</value>
+  </data>
+  <data name="ShortcutStartRecording" xml:space="preserve">
+    <value>Démarrer / Arrêter l'enregistrement</value>
+  </data>
+  <data name="ShortcutSwitchTabs" xml:space="preserve">
+    <value>Basculer Audio / Historique</value>
+  </data>
+  <data name="ShortcutCopyTranscript" xml:space="preserve">
+    <value>Copier la transcription</value>
+  </data>
+  <data name="ShortcutJumpStart" xml:space="preserve">
+    <value>Aller au début</value>
+  </data>
+  <data name="ShortcutJumpEnd" xml:space="preserve">
+    <value>Aller à la fin</value>
+  </data>
+  <data name="ShortcutSpeedUp" xml:space="preserve">
+    <value>Augmenter la vitesse</value>
+  </data>
+  <data name="ShortcutSpeedDown" xml:space="preserve">
+    <value>Réduire la vitesse</value>
+  </data>
+  <data name="ShortcutToggleView" xml:space="preserve">
+    <value>Basculer Segments / Document</value>
+  </data>
+  <data name="ShortcutClearFile" xml:space="preserve">
+    <value>Effacer le fichier actuel</value>
+  </data>
+  <data name="ShortcutNavigateHistory" xml:space="preserve">
+    <value>Naviguer dans l'historique</value>
+  </data>
 </root>

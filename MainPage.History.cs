@@ -668,6 +668,7 @@ public partial class MainPage
             TranscriptHeaderLabel.IsVisible = true;
             StatsPanel.IsVisible = true;
             ResultActions.IsVisible = true;
+            HistoryDateLabel.IsVisible = true;
 
             // Update stats IMMEDIATELY - use formatted word count if dictation enabled
             var wordCount = CalculateFormattedWordCount(_currentSegments, _settingsService.EnableDictationFormatting);
@@ -708,9 +709,25 @@ public partial class MainPage
             _historyPlaybackTimer?.Stop();
             ClearSegmentHighlight();
 
-            // Reset playback panel
-            _historyAudioFilePath = null;
-            HistoryPlaybackPanel.IsVisible = false;
+            // Check if audio file exists BEFORE building segments
+            bool hasAudioFile = !string.IsNullOrEmpty(freshRecord.AudioFilePath) && File.Exists(freshRecord.AudioFilePath);
+
+            // Show playback panel IMMEDIATELY if audio exists (before segment loading)
+            _historyAudioFilePath = hasAudioFile ? freshRecord.AudioFilePath : null;
+            if (hasAudioFile)
+            {
+                // Show panel immediately with loading state
+                HistoryCurrentTimeLabel.Text = "0:00";
+                HistoryTotalTimeLabel.Text = "--:--";
+                HistoryPlaybackSlider.Value = 0;
+                HistoryAudioSourceLabel.Text = System.IO.Path.GetFileName(freshRecord.AudioFilePath);
+                HistoryPlayPauseIcon.Text = "▶";
+                HistoryPlaybackPanel.IsVisible = true;
+            }
+            else
+            {
+                HistoryPlaybackPanel.IsVisible = false;
+            }
 
             // Build segments (async) - scroll will happen after build completes
             BuildSegmentView();
@@ -734,13 +751,9 @@ public partial class MainPage
                 return;
             }
 
-            // Now load audio in background
-            bool hasAudioFile = !string.IsNullOrEmpty(freshRecord.AudioFilePath) && File.Exists(freshRecord.AudioFilePath);
-
+            // Now load audio in background (panel already shown with placeholder)
             if (hasAudioFile)
             {
-                _historyAudioFilePath = freshRecord.AudioFilePath;
-
                 bool audioLoaded = _historyAudioPlayer.Load(freshRecord.AudioFilePath!);
 
                 // Check again if user switched
@@ -751,12 +764,8 @@ public partial class MainPage
 
                 if (audioLoaded)
                 {
+                    // Update duration now that audio is loaded
                     HistoryTotalTimeLabel.Text = TranscriptExporter.FormatDisplayTime(_historyAudioPlayer.TotalDuration);
-                    HistoryCurrentTimeLabel.Text = "0:00";
-                    HistoryPlaybackSlider.Value = 0;
-                    HistoryAudioSourceLabel.Text = System.IO.Path.GetFileName(freshRecord.AudioFilePath);
-                    HistoryPlayPauseIcon.Text = "▶";
-                    HistoryPlaybackPanel.IsVisible = true;
 
                     if (autoPlay)
                     {
@@ -764,6 +773,12 @@ public partial class MainPage
                         HistoryPlayPauseIcon.Text = "▌▌";
                         _historyPlaybackTimer?.Start();
                     }
+                }
+                else
+                {
+                    // Audio failed to load, hide panel
+                    HistoryPlaybackPanel.IsVisible = false;
+                    _historyAudioFilePath = null;
                 }
             }
         }
@@ -887,6 +902,119 @@ public partial class MainPage
         _currentRecordId = record.Id;
         _currentSegments = segmentsCopy;
         UpdateHistoryBadge();
+    }
+
+    /// <summary>
+    /// Navigate to the previous history item (Up arrow - newer item)
+    /// </summary>
+    private void NavigateHistoryPrevious()
+    {
+        if (_isFileTabActive) return;
+
+        var query = HistorySearchEntry.Text?.Trim() ?? "";
+        var records = string.IsNullOrEmpty(query)
+            ? _historyService.GetAllLightweight()
+            : _historyService.Search(query);
+
+        if (records.Count == 0) return;
+
+        // Find current index
+        int currentIndex = -1;
+        if (!string.IsNullOrEmpty(_currentRecordId))
+        {
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].Id == _currentRecordId)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (currentIndex == -1) currentIndex = records.Count; // Will result in selecting first item
+
+        // Move to previous (newer) item
+        int newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = 0; // Stay at first item
+
+        if (newIndex != currentIndex || string.IsNullOrEmpty(_currentRecordId))
+        {
+            var targetId = records[newIndex].Id;
+            var record = _historyService.GetById(targetId);
+            if (record != null)
+            {
+                LoadHistoryRecord(record, autoPlay: false);
+                ScrollHistoryItemIntoView(targetId);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Navigate to the next history item (Down arrow - older item)
+    /// </summary>
+    private void NavigateHistoryNext()
+    {
+        if (_isFileTabActive) return;
+
+        var query = HistorySearchEntry.Text?.Trim() ?? "";
+        var records = string.IsNullOrEmpty(query)
+            ? _historyService.GetAllLightweight()
+            : _historyService.Search(query);
+
+        if (records.Count == 0) return;
+
+        // Find current index
+        int currentIndex = -1;
+        if (!string.IsNullOrEmpty(_currentRecordId))
+        {
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].Id == _currentRecordId)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // Move to next (older) item
+        int newIndex = currentIndex + 1;
+        if (newIndex >= records.Count) newIndex = records.Count - 1; // Stay at last item
+
+        if (newIndex != currentIndex)
+        {
+            var targetId = records[newIndex].Id;
+            var record = _historyService.GetById(targetId);
+            if (record != null)
+            {
+                LoadHistoryRecord(record, autoPlay: false);
+                ScrollHistoryItemIntoView(targetId);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Scrolls the history list to make the specified item visible
+    /// </summary>
+    private void ScrollHistoryItemIntoView(string recordId)
+    {
+        if (_historyItemCache.TryGetValue(recordId, out var border))
+        {
+            // Use Dispatcher to ensure layout is complete before scrolling
+            Dispatcher.Dispatch(async () =>
+            {
+                await Task.Delay(50); // Small delay to ensure layout is updated
+                try
+                {
+                    await HistoryScrollView.ScrollToAsync(border, ScrollToPosition.MakeVisible, true);
+                }
+                catch
+                {
+                    // Ignore scroll errors
+                }
+            });
+        }
     }
 
     #endregion

@@ -201,6 +201,9 @@ public partial class MainPage
 
         // Theme toggle tooltip
         UpdateThemeToggleUI(_settingsService.DarkMode);
+
+        // Keyboard shortcuts panel
+        RefreshKeyboardShortcutsStrings();
     }
 
     private void OnWindowDestroying(object? sender, EventArgs e)
@@ -493,6 +496,14 @@ public partial class MainPage
 
         _selectedFilePath = filePath;
         // DO NOT clear _currentRecordId or _currentSegments - keep history state intact
+
+        // Switch to Audio tab when loading a new file and hide any history transcript
+        if (!_isFileTabActive)
+        {
+            _isFileTabActive = true;
+            UpdateTabUI();
+        }
+        HideTranscriptUI();
 
         // Show loading state immediately
         var fileName = System.IO.Path.GetFileName(filePath);

@@ -254,4 +254,33 @@ public static class StringKeys
     // File loading
     public const string LoadingFile = "LoadingFile";
     public const string ExtractingAudio = "ExtractingAudio";
+
+    // Keyboard shortcuts
+    public const string KeyboardShortcuts = "KeyboardShortcuts";
+    public const string KeyboardShortcutsDescription = "KeyboardShortcutsDescription";
+    public const string ShortcutCategoryGeneral = "ShortcutCategoryGeneral";
+    public const string ShortcutCategoryPlayback = "ShortcutCategoryPlayback";
+    public const string ShortcutCategoryTranscript = "ShortcutCategoryTranscript";
+    public const string ShortcutOpenFile = "ShortcutOpenFile";
+    public const string ShortcutExport = "ShortcutExport";
+    public const string ShortcutSettings = "ShortcutSettings";
+    public const string ShortcutClosePanel = "ShortcutClosePanel";
+    public const string ShortcutPlayPause = "ShortcutPlayPause";
+    public const string ShortcutSeekBack = "ShortcutSeekBack";
+    public const string ShortcutSeekForward = "ShortcutSeekForward";
+    public const string ShortcutSearch = "ShortcutSearch";
+    public const string ShortcutNextMatch = "ShortcutNextMatch";
+    public const string ShortcutPrevMatch = "ShortcutPrevMatch";
+    public const string ShortcutShowShortcuts = "ShortcutShowShortcuts";
+    public const string ShortcutStartTranscription = "ShortcutStartTranscription";
+    public const string ShortcutStartRecording = "ShortcutStartRecording";
+    public const string ShortcutSwitchTabs = "ShortcutSwitchTabs";
+    public const string ShortcutCopyTranscript = "ShortcutCopyTranscript";
+    public const string ShortcutJumpStart = "ShortcutJumpStart";
+    public const string ShortcutJumpEnd = "ShortcutJumpEnd";
+    public const string ShortcutSpeedUp = "ShortcutSpeedUp";
+    public const string ShortcutSpeedDown = "ShortcutSpeedDown";
+    public const string ShortcutToggleView = "ShortcutToggleView";
+    public const string ShortcutClearFile = "ShortcutClearFile";
+    public const string ShortcutNavigateHistory = "ShortcutNavigateHistory";
 }

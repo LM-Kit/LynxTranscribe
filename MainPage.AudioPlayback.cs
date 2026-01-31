@@ -68,6 +68,36 @@ public partial class MainPage
         _audioPlayer.SeekForward(TimeSpan.FromSeconds(AppConstants.Playback.SeekSeconds));
     }
 
+    /// <summary>
+    /// Seeks the main audio player by the specified number of seconds (positive or negative)
+    /// </summary>
+    private void SeekRelative(double seconds)
+    {
+        if (seconds < 0)
+        {
+            _audioPlayer.SeekBackward(TimeSpan.FromSeconds(-seconds));
+        }
+        else
+        {
+            _audioPlayer.SeekForward(TimeSpan.FromSeconds(seconds));
+        }
+    }
+
+    /// <summary>
+    /// Seeks the history audio player by the specified number of seconds (positive or negative)
+    /// </summary>
+    private void SeekHistoryRelative(double seconds)
+    {
+        if (seconds < 0)
+        {
+            _historyAudioPlayer.SeekBackward(TimeSpan.FromSeconds(-seconds));
+        }
+        else
+        {
+            _historyAudioPlayer.SeekForward(TimeSpan.FromSeconds(seconds));
+        }
+    }
+
     private void OnVolumeChanged(object? sender, ValueChangedEventArgs e)
     {
         if (_isSyncingVolume)
