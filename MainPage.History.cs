@@ -919,9 +919,20 @@ public partial class MainPage
         if (records.Count == 0) return;
 
         // Find current index
-        int currentIndex = string.IsNullOrEmpty(_currentRecordId)
-            ? records.Count // Will result in selecting first item
-            : records.FindIndex(r => r.Id == _currentRecordId);
+        int currentIndex = -1;
+        if (!string.IsNullOrEmpty(_currentRecordId))
+        {
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].Id == _currentRecordId)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (currentIndex == -1) currentIndex = records.Count; // Will result in selecting first item
 
         // Move to previous (newer) item
         int newIndex = currentIndex - 1;
@@ -952,9 +963,18 @@ public partial class MainPage
         if (records.Count == 0) return;
 
         // Find current index
-        int currentIndex = string.IsNullOrEmpty(_currentRecordId)
-            ? -1 // Will result in selecting first item
-            : records.FindIndex(r => r.Id == _currentRecordId);
+        int currentIndex = -1;
+        if (!string.IsNullOrEmpty(_currentRecordId))
+        {
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].Id == _currentRecordId)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
 
         // Move to next (older) item
         int newIndex = currentIndex + 1;
