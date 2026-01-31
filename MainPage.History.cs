@@ -668,6 +668,7 @@ public partial class MainPage
             TranscriptHeaderLabel.IsVisible = true;
             StatsPanel.IsVisible = true;
             ResultActions.IsVisible = true;
+            HistoryDateLabel.IsVisible = true;
 
             // Update stats IMMEDIATELY - use formatted word count if dictation enabled
             var wordCount = CalculateFormattedWordCount(_currentSegments, _settingsService.EnableDictationFormatting);
@@ -708,9 +709,25 @@ public partial class MainPage
             _historyPlaybackTimer?.Stop();
             ClearSegmentHighlight();
 
-            // Reset playback panel
-            _historyAudioFilePath = null;
-            HistoryPlaybackPanel.IsVisible = false;
+            // Check if audio file exists BEFORE building segments
+            bool hasAudioFile = !string.IsNullOrEmpty(freshRecord.AudioFilePath) && File.Exists(freshRecord.AudioFilePath);
+
+            // Show playback panel IMMEDIATELY if audio exists (before segment loading)
+            _historyAudioFilePath = hasAudioFile ? freshRecord.AudioFilePath : null;
+            if (hasAudioFile)
+            {
+                // Show panel immediately with loading state
+                HistoryCurrentTimeLabel.Text = "0:00";
+                HistoryTotalTimeLabel.Text = "--:--";
+                HistoryPlaybackSlider.Value = 0;
+                HistoryAudioSourceLabel.Text = System.IO.Path.GetFileName(freshRecord.AudioFilePath);
+                HistoryPlayPauseIcon.Text = "▶";
+                HistoryPlaybackPanel.IsVisible = true;
+            }
+            else
+            {
+                HistoryPlaybackPanel.IsVisible = false;
+            }
 
             // Build segments (async) - scroll will happen after build completes
             BuildSegmentView();
@@ -734,13 +751,9 @@ public partial class MainPage
                 return;
             }
 
-            // Now load audio in background
-            bool hasAudioFile = !string.IsNullOrEmpty(freshRecord.AudioFilePath) && File.Exists(freshRecord.AudioFilePath);
-
+            // Now load audio in background (panel already shown with placeholder)
             if (hasAudioFile)
             {
-                _historyAudioFilePath = freshRecord.AudioFilePath;
-
                 bool audioLoaded = _historyAudioPlayer.Load(freshRecord.AudioFilePath!);
 
                 // Check again if user switched
@@ -751,12 +764,8 @@ public partial class MainPage
 
                 if (audioLoaded)
                 {
+                    // Update duration now that audio is loaded
                     HistoryTotalTimeLabel.Text = TranscriptExporter.FormatDisplayTime(_historyAudioPlayer.TotalDuration);
-                    HistoryCurrentTimeLabel.Text = "0:00";
-                    HistoryPlaybackSlider.Value = 0;
-                    HistoryAudioSourceLabel.Text = System.IO.Path.GetFileName(freshRecord.AudioFilePath);
-                    HistoryPlayPauseIcon.Text = "▶";
-                    HistoryPlaybackPanel.IsVisible = true;
 
                     if (autoPlay)
                     {
@@ -764,6 +773,12 @@ public partial class MainPage
                         HistoryPlayPauseIcon.Text = "▌▌";
                         _historyPlaybackTimer?.Start();
                     }
+                }
+                else
+                {
+                    // Audio failed to load, hide panel
+                    HistoryPlaybackPanel.IsVisible = false;
+                    _historyAudioFilePath = null;
                 }
             }
         }
