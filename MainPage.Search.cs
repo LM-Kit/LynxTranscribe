@@ -486,7 +486,8 @@ public partial class MainPage
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                // Try main player first, then history player
+                // Determine which player to control based on context
+                // Priority: Playing player > Main player with loaded audio > History player with loaded audio
                 if (_audioPlayer.IsPlaying)
                 {
                     OnPlayPauseClicked(null, null!);
@@ -495,9 +496,47 @@ public partial class MainPage
                 {
                     OnHistoryPlayPauseClicked(null, null!);
                 }
-                else if (_selectedFilePath != null)
+                else if (PlayerPanel.IsVisible && _selectedFilePath != null)
                 {
+                    // Main player has audio loaded - start playback
                     OnPlayPauseClicked(null, null!);
+                }
+                else if (!string.IsNullOrEmpty(_historyAudioFilePath))
+                {
+                    // History player has audio loaded - start playback
+                    OnHistoryPlayPauseClicked(null, null!);
+                }
+            });
+            e.Handled = true;
+        }
+        // Left Arrow - Seek backward 5 seconds
+        else if (e.Key == Windows.System.VirtualKey.Left && !_isEditMode && !SearchEntry.IsFocused)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (PlayerPanel.IsVisible && _selectedFilePath != null)
+                {
+                    SeekRelative(-5);
+                }
+                else if (!string.IsNullOrEmpty(_historyAudioFilePath))
+                {
+                    SeekHistoryRelative(-5);
+                }
+            });
+            e.Handled = true;
+        }
+        // Right Arrow - Seek forward 5 seconds
+        else if (e.Key == Windows.System.VirtualKey.Right && !_isEditMode && !SearchEntry.IsFocused)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (PlayerPanel.IsVisible && _selectedFilePath != null)
+                {
+                    SeekRelative(5);
+                }
+                else if (!string.IsNullOrEmpty(_historyAudioFilePath))
+                {
+                    SeekHistoryRelative(5);
                 }
             });
             e.Handled = true;

@@ -497,6 +497,13 @@ public partial class MainPage
         _selectedFilePath = filePath;
         // DO NOT clear _currentRecordId or _currentSegments - keep history state intact
 
+        // Switch to Audio tab when loading a new file
+        if (!_isFileTabActive)
+        {
+            _isFileTabActive = true;
+            UpdateTabUI();
+        }
+
         // Show loading state immediately
         var fileName = System.IO.Path.GetFileName(filePath);
         var fileInfo = new FileInfo(filePath);
