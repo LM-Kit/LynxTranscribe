@@ -138,6 +138,7 @@ public partial class MainPage
 
         // Mode button styles
         ModeSelected,
+        ModeSelectedHover,
         ModeUnselected,
         ModeHover,
 
@@ -271,6 +272,16 @@ public partial class MainPage
             case ControlStyle.ModeSelected:
                 border.BackgroundColor = (Color)r["AccentSurface"]!;
                 border.Stroke = (Color)r["AccentPrimary"]!;
+                if (label != null)
+                {
+                    label.TextColor = (Color)r["AccentText"]!;
+                }
+
+                break;
+
+            case ControlStyle.ModeSelectedHover:
+                border.BackgroundColor = (Color)r["AccentSurface"]!;
+                border.Stroke = (Color)r["AccentMuted"]!;
                 if (label != null)
                 {
                     label.TextColor = (Color)r["AccentText"]!;

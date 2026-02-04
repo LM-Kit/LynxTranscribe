@@ -64,7 +64,11 @@ public partial class MainPage
 
     private void OnEditToggleHoverEnter(object? sender, PointerEventArgs e)
     {
-        if (!_isEditMode)
+        if (_isEditMode)
+        {
+            ApplyStyle(EditToggle, ControlStyle.ModeSelectedHover, EditToggleLabel);
+        }
+        else
         {
             ApplyStyle(EditToggle, ControlStyle.ModeHover, EditToggleLabel);
         }
@@ -72,7 +76,11 @@ public partial class MainPage
 
     private void OnEditToggleHoverExit(object? sender, PointerEventArgs e)
     {
-        if (!_isEditMode)
+        if (_isEditMode)
+        {
+            ApplyStyle(EditToggle, ControlStyle.ModeSelected, EditToggleLabel);
+        }
+        else
         {
             ApplyStyle(EditToggle, ControlStyle.ButtonDefault, EditToggleLabel);
         }
@@ -212,15 +220,14 @@ public partial class MainPage
         var isEnabled = _settingsService.EnableDictationFormatting;
 
         // Update toggle button styling based on state
+        // Uses unified appearance with Edit and Search buttons
         if (isEnabled)
         {
-            ApplyStyle(DictationToggle, ControlStyle.ModeSelected);
-            DictationToggleLabel.TextColor = (Color)Resources["TextPrimary"]!;
+            ApplyStyle(DictationToggle, ControlStyle.ModeSelected, DictationToggleLabel);
         }
         else
         {
-            ApplyStyle(DictationToggle, ControlStyle.ButtonDefault);
-            DictationToggleLabel.TextColor = (Color)Resources["TextPrimary"]!;
+            ApplyStyle(DictationToggle, ControlStyle.ButtonDefault, DictationToggleLabel);
         }
     }
 
@@ -274,48 +281,62 @@ public partial class MainPage
         var accentText = (Color)Resources["AccentText"]!;
         var dictationEnabled = _settingsService.EnableDictationFormatting;
 
-        for (int i = 0; i < _segmentViews.Count && i < _currentSegments.Count; i++)
+        // PERFORMANCE: Batch all UI updates to prevent layout cascade with 1000+ segments
+        SegmentsList.BatchBegin();
+
+        try
         {
-            var border = _segmentViews[i];
-            var segment = _currentSegments[i];
-            var segmentText = segment.Text.Trim();
-
-            if (border.Content is Grid grid)
+            for (int i = 0; i < _segmentViews.Count && i < _currentSegments.Count; i++)
             {
-                foreach (var child in grid.Children)
-                {
-                    if (Grid.GetColumn((BindableObject)child) == 1 && child is Label label && label.ClassId == "displayLabel")
-                    {
-                        // Determine color based on selection state
-                        var isSelected = i == _selectedSegmentIndex;
-                        var normalColor = isSelected ? textPrimary : textSecondary;
+                var border = _segmentViews[i];
+                var segment = _currentSegments[i];
+                var segmentText = segment.Text.Trim();
 
-                        // Always use FormattedText to maintain consistent line height
-                        label.Text = null;
-                        if (dictationEnabled)
+                if (border.Content is Grid grid)
+                {
+                    foreach (var child in grid.Children)
+                    {
+                        if (Grid.GetColumn((BindableObject)child) == 1 && child is Label label && label.ClassId == "displayLabel")
                         {
-                            label.FormattedText = BuildHighlightedText(segmentText, normalColor, accentText);
-                        }
-                        else
-                        {
-                            // Single span with no highlighting
-                            label.FormattedText = new FormattedString
+                            // Determine color based on selection state
+                            var isSelected = i == _selectedSegmentIndex;
+                            var normalColor = isSelected ? textPrimary : textSecondary;
+
+                            // Always use FormattedText to maintain consistent line height
+                            label.Text = null;
+                            if (dictationEnabled)
                             {
-                                Spans = { new Span { Text = segmentText, TextColor = normalColor } }
-                            };
+                                label.FormattedText = BuildHighlightedText(segmentText, normalColor, accentText);
+                            }
+                            else
+                            {
+                                // Single span with no highlighting
+                                label.FormattedText = new FormattedString
+                                {
+                                    Spans = { new Span { Text = segmentText, TextColor = normalColor } }
+                                };
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }
+        }
+        finally
+        {
+            SegmentsList.BatchCommit();
         }
     }
 
     private void OnDictationToggleHoverEnter(object? sender, PointerEventArgs e)
     {
-        if (!_settingsService.EnableDictationFormatting)
+        if (_settingsService.EnableDictationFormatting)
         {
-            ApplyStyle(DictationToggle, ControlStyle.ButtonHover);
+            ApplyStyle(DictationToggle, ControlStyle.ModeSelectedHover, DictationToggleLabel);
+        }
+        else
+        {
+            ApplyStyle(DictationToggle, ControlStyle.ModeHover, DictationToggleLabel);
         }
     }
 

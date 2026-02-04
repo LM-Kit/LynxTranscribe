@@ -1740,34 +1740,44 @@ public partial class MainPage
 
     public void UpdateSegmentFontSize()
     {
-        // Update font size on both Label and Editor elements in segments view
-        foreach (var border in _segmentViews)
+        // PERFORMANCE: Batch all UI updates to prevent layout cascade with 1000+ segments
+        SegmentsList.BatchBegin();
+
+        try
         {
-            if (border.Content is Grid grid)
+            // Update font size on both Label and Editor elements in segments view
+            foreach (var border in _segmentViews)
             {
-                foreach (var child in grid.Children)
+                if (border.Content is Grid grid)
                 {
-                    if (Grid.GetColumn((BindableObject)child) == 1)
+                    foreach (var child in grid.Children)
                     {
-                        if (child is Label label && label.ClassId == "displayLabel")
+                        if (Grid.GetColumn((BindableObject)child) == 1)
                         {
-                            label.FontSize = _transcriptFontSize;
-                            // Also update FormattedText spans (for dictation highlighting)
-                            if (label.FormattedText != null)
+                            if (child is Label label && label.ClassId == "displayLabel")
                             {
-                                foreach (var span in label.FormattedText.Spans)
+                                label.FontSize = _transcriptFontSize;
+                                // Also update FormattedText spans (for dictation highlighting)
+                                if (label.FormattedText != null)
                                 {
-                                    span.FontSize = _transcriptFontSize;
+                                    foreach (var span in label.FormattedText.Spans)
+                                    {
+                                        span.FontSize = _transcriptFontSize;
+                                    }
                                 }
                             }
-                        }
-                        else if (child is Editor editor && editor.ClassId == "editEditor")
-                        {
-                            editor.FontSize = _transcriptFontSize;
+                            else if (child is Editor editor && editor.ClassId == "editEditor")
+                            {
+                                editor.FontSize = _transcriptFontSize;
+                            }
                         }
                     }
                 }
             }
+        }
+        finally
+        {
+            SegmentsList.BatchCommit();
         }
 
         // Also update DocumentLabel font size for document view
@@ -1786,110 +1796,126 @@ public partial class MainPage
 
         bool hasChanges = false;
 
-        // Toggle visibility between Label and Editor for each segment
-        for (int i = 0; i < _segmentViews.Count; i++)
+        // PERFORMANCE: Batch all UI updates to prevent layout cascade with 1000+ segments
+        // Each property change normally triggers a layout pass; batching defers until commit
+        SegmentsList.BatchBegin();
+
+        try
         {
-            var border = _segmentViews[i];
-            var isSelected = i == _selectedSegmentIndex;
-
-            if (border.Content is Grid grid)
+            // Toggle visibility between Label and Editor for each segment
+            for (int i = 0; i < _segmentViews.Count; i++)
             {
-                Label? displayLabel = null;
-                Editor? editEditor = null;
+                var border = _segmentViews[i];
+                var isSelected = i == _selectedSegmentIndex;
 
-                foreach (var child in grid.Children)
+                if (border.Content is Grid grid)
                 {
-                    if (Grid.GetColumn((BindableObject)child) == 1)
-                    {
-                        if (child is Label label && label.ClassId == "displayLabel")
-                        {
-                            displayLabel = label;
-                        }
-                        else if (child is Editor editor && editor.ClassId == "editEditor")
-                        {
-                            editEditor = editor;
-                        }
-                    }
-                }
+                    Label? displayLabel = null;
+                    Editor? editEditor = null;
 
-                if (displayLabel != null && editEditor != null)
-                {
-                    if (_isEditMode)
+                    foreach (var child in grid.Children)
                     {
-                        // Entering edit mode: sync text from label to editor
-                        // Get text from either Text property or FormattedText spans
-                        var labelText = displayLabel.Text;
-                        if (string.IsNullOrEmpty(labelText) && displayLabel.FormattedText != null)
+                        if (Grid.GetColumn((BindableObject)child) == 1)
                         {
-                            var sb = new System.Text.StringBuilder();
-                            foreach (var span in displayLabel.FormattedText.Spans)
+                            if (child is Label label && label.ClassId == "displayLabel")
                             {
-                                sb.Append(span.Text);
+                                displayLabel = label;
                             }
-                            labelText = sb.ToString();
-                        }
-                        editEditor.Text = labelText;
-                        displayLabel.IsVisible = false;
-                        editEditor.IsVisible = true;
-                    }
-                    else
-                    {
-                        // Exiting edit mode: check for changes and save
-                        var editorText = editEditor.Text?.Trim() ?? "";
-                        var currentText = i < _currentSegments.Count ? _currentSegments[i].Text.Trim() : "";
-
-                        if (!string.IsNullOrEmpty(editorText) && editorText != currentText)
-                        {
-                            // Update the segment
-                            if (i < _currentSegments.Count)
+                            else if (child is Editor editor && editor.ClassId == "editEditor")
                             {
-                                var segment = _currentSegments[i];
-                                _currentSegments[i] = new AudioSegment(
-                                    editorText,
-                                    segment.Language ?? "en",
-                                    segment.Start,
-                                    segment.End,
-                                    segment.Confidence);
-                                hasChanges = true;
+                                editEditor = editor;
                             }
                         }
+                    }
 
-                        // Sync text from editor to label - always use FormattedText for consistent rendering
-                        var labelColor = isSelected ? textPrimary : textSecondary;
-                        displayLabel.Text = null;
-                        if (_settingsService.EnableDictationFormatting)
+                    if (displayLabel != null && editEditor != null)
+                    {
+                        if (_isEditMode)
                         {
-                            displayLabel.FormattedText = BuildHighlightedText(editorText, labelColor, (Color)Resources["AccentText"]!);
+                            // Entering edit mode: sync text from label to editor
+                            // Get text from either Text property or FormattedText spans
+                            var labelText = displayLabel.Text;
+                            if (string.IsNullOrEmpty(labelText) && displayLabel.FormattedText != null)
+                            {
+                                var sb = new System.Text.StringBuilder();
+                                foreach (var span in displayLabel.FormattedText.Spans)
+                                {
+                                    sb.Append(span.Text);
+                                }
+                                labelText = sb.ToString();
+                            }
+                            editEditor.Text = labelText;
+                            displayLabel.IsVisible = false;
+                            editEditor.IsVisible = true;
                         }
                         else
                         {
-                            // Single span with no highlighting
-                            displayLabel.FormattedText = new FormattedString
+                            // Exiting edit mode: check for changes and save
+                            var editorText = editEditor.Text?.Trim() ?? "";
+                            var currentText = i < _currentSegments.Count ? _currentSegments[i].Text.Trim() : "";
+
+                            bool segmentModified = !string.IsNullOrEmpty(editorText) && editorText != currentText;
+                            if (segmentModified)
                             {
-                                Spans = { new Span { Text = editorText, TextColor = labelColor } }
-                            };
+                                // Update the segment
+                                if (i < _currentSegments.Count)
+                                {
+                                    var segment = _currentSegments[i];
+                                    _currentSegments[i] = new AudioSegment(
+                                        editorText,
+                                        segment.Language ?? "en",
+                                        segment.Start,
+                                        segment.End,
+                                        segment.Confidence);
+                                    hasChanges = true;
+                                }
+                            }
+
+                            // Only rebuild FormattedText if segment was actually modified
+                            // This avoids expensive Formatter.FindCommandMatches() calls for unchanged segments
+                            if (segmentModified)
+                            {
+                                var labelColor = isSelected ? textPrimary : textSecondary;
+                                displayLabel.Text = null;
+                                if (_settingsService.EnableDictationFormatting)
+                                {
+                                    displayLabel.FormattedText = BuildHighlightedText(editorText, labelColor, (Color)Resources["AccentText"]!);
+                                }
+                                else
+                                {
+                                    displayLabel.FormattedText = new FormattedString
+                                    {
+                                        Spans = { new Span { Text = editorText, TextColor = labelColor } }
+                                    };
+                                }
+                            }
+                            editEditor.IsVisible = false;
+                            displayLabel.IsVisible = true;
                         }
-                        editEditor.IsVisible = false;
-                        displayLabel.IsVisible = true;
                     }
                 }
-            }
 
-            // Update border styling - preserve selection styling
-            if (isSelected)
-            {
-                border.BackgroundColor = accentSurface;
-                border.Stroke = accentPrimary;
-                border.StrokeThickness = 2;
-                border.Padding = new Thickness(12, 10);
+                // Update border styling - preserve selection styling
+                if (isSelected)
+                {
+                    border.BackgroundColor = accentSurface;
+                    border.Stroke = accentPrimary;
+                    border.StrokeThickness = 2;
+                    border.Padding = new Thickness(12, 10);
+                }
+                else
+                {
+                    border.BackgroundColor = _isEditMode ? surfaceColor : backgroundTertiary;
+                    border.Stroke = surfaceBorder;
+                    border.StrokeThickness = 1;
+                    border.Padding = new Thickness(10, 8);
+                }
             }
-            else
-            {
-                border.BackgroundColor = _isEditMode ? surfaceColor : backgroundTertiary;
-                border.Stroke = surfaceBorder;
-                border.StrokeThickness = 1;
-                border.Padding = new Thickness(10, 8);
-            }
+        }
+        finally
+        {
+            // PERFORMANCE: Commit all batched changes in a single layout pass
+            SegmentsList.BatchCommit();
         }
 
         // Save all changes when exiting edit mode
