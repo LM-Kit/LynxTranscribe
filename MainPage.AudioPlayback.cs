@@ -1838,7 +1838,8 @@ public partial class MainPage
                         var editorText = editEditor.Text?.Trim() ?? "";
                         var currentText = i < _currentSegments.Count ? _currentSegments[i].Text.Trim() : "";
 
-                        if (!string.IsNullOrEmpty(editorText) && editorText != currentText)
+                        bool segmentModified = !string.IsNullOrEmpty(editorText) && editorText != currentText;
+                        if (segmentModified)
                         {
                             // Update the segment
                             if (i < _currentSegments.Count)
@@ -1854,20 +1855,23 @@ public partial class MainPage
                             }
                         }
 
-                        // Sync text from editor to label - always use FormattedText for consistent rendering
-                        var labelColor = isSelected ? textPrimary : textSecondary;
-                        displayLabel.Text = null;
-                        if (_settingsService.EnableDictationFormatting)
+                        // Only rebuild FormattedText if segment was actually modified
+                        // This avoids expensive Formatter.FindCommandMatches() calls for unchanged segments
+                        if (segmentModified)
                         {
-                            displayLabel.FormattedText = BuildHighlightedText(editorText, labelColor, (Color)Resources["AccentText"]!);
-                        }
-                        else
-                        {
-                            // Single span with no highlighting
-                            displayLabel.FormattedText = new FormattedString
+                            var labelColor = isSelected ? textPrimary : textSecondary;
+                            displayLabel.Text = null;
+                            if (_settingsService.EnableDictationFormatting)
                             {
-                                Spans = { new Span { Text = editorText, TextColor = labelColor } }
-                            };
+                                displayLabel.FormattedText = BuildHighlightedText(editorText, labelColor, (Color)Resources["AccentText"]!);
+                            }
+                            else
+                            {
+                                displayLabel.FormattedText = new FormattedString
+                                {
+                                    Spans = { new Span { Text = editorText, TextColor = labelColor } }
+                                };
+                            }
                         }
                         editEditor.IsVisible = false;
                         displayLabel.IsVisible = true;
