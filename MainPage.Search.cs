@@ -111,55 +111,35 @@ public partial class MainPage
 
     private void OnSearchButtonHoverEnter(object? sender, PointerEventArgs e)
     {
-        // Don't change hover if search is active
         if (SearchBar.IsVisible)
         {
-            return;
+            // Hover while in search mode
+            ApplyStyle(SearchButton, ControlStyle.ModeSelectedHover, SearchButtonLabel);
         }
-
-        ApplyStyle(SearchButton, ControlStyle.ButtonHover);
-        if (SearchButton.Content is Label label)
+        else
         {
-            label.TextColor = (Color)Resources["AccentText"]!;
+            ApplyStyle(SearchButton, ControlStyle.ModeHover, SearchButtonLabel);
         }
     }
 
     private void OnSearchButtonHoverExit(object? sender, PointerEventArgs e)
     {
-        // Don't change hover if search is active
-        if (SearchBar.IsVisible)
-        {
-            return;
-        }
-
-        ApplyStyle(SearchButton, ControlStyle.ButtonDefault);
-        if (SearchButton.Content is Label label)
-        {
-            label.TextColor = (Color)Resources["TextPrimary"]!;
-        }
+        UpdateSearchButtonState();
     }
 
     private void UpdateSearchButtonState()
     {
         if (SearchBar.IsVisible)
         {
-            // Active state - same as Edit button when editing
-            ApplyStyle(SearchButton, ControlStyle.ModeSelected);
-            if (SearchButton.Content is Label label)
-            {
-                label.Text = L.Localize(StringKeys.Searching);
-                label.TextColor = (Color)Resources["AccentText"]!;
-            }
+            // Active state - unified appearance with Edit and Dictation buttons
+            ApplyStyle(SearchButton, ControlStyle.ModeSelected, SearchButtonLabel);
+            SearchButtonLabel.Text = L.Localize(StringKeys.Searching);
         }
         else
         {
             // Normal state
-            ApplyStyle(SearchButton, ControlStyle.ButtonDefault);
-            if (SearchButton.Content is Label label)
-            {
-                label.Text = L.Localize(StringKeys.Search);
-                label.TextColor = (Color)Resources["TextPrimary"]!;
-            }
+            ApplyStyle(SearchButton, ControlStyle.ButtonDefault, SearchButtonLabel);
+            SearchButtonLabel.Text = L.Localize(StringKeys.Search);
         }
     }
 
